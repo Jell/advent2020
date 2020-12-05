@@ -1,0 +1,6 @@
+/.DS_Store
+/in_clojure/.nrepl-port
+/in_haskell/.stack-work/install/x86_64-osx/0e8cd36856e34daf2fe0c45f78e0c78ed8511bfc72170c199994a50bae741faf/8.4.4/pkgdb/package.cache
+/in_haskell/.stack-work/
+/in_haskell/advent.cabal
+/in_haskell/advent2019.cabal
