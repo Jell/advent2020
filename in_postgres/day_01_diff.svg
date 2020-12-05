@@ -12,13 +12,13 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_01_part_1.sql&#160;b/day_01_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;4481891..267cba7&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;b30bf44..9d8c956&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_01_part_1.sql</tspan>
 </text>
 <text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_01_part_2.sql</tspan>
 </text>
-<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,10&#160;+12,12&#160;@@</tspan>&#160;CREATE&#160;INDEX&#160;ON&#160;dec01&#160;(value,&#160;line_number);
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,10&#160;+12,12&#160;@@</tspan>&#160;CREATE&#160;INDEX&#160;ON&#160;day01&#160;(value,&#160;line_number);
 </text>
 <text x="10" y="120">
 </text>
@@ -28,7 +28,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="180">SELECT&#160;concat('Day&#160;01&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;(a.value&#160;*&#160;<tspan style="fill:#cd0000;">b.value))</tspan><tspan style="fill:#00cd00;">b.value&#160;*&#160;c.value))</tspan>
 </text>
-<text x="10" y="200">from&#160;dec01&#160;as&#160;a,&#160;dec01&#160;as&#160;<tspan style="fill:#cd0000;">b</tspan><tspan style="fill:#00cd00;">b,&#160;dec01&#160;as&#160;c</tspan>
+<text x="10" y="200">from&#160;day01&#160;as&#160;a,&#160;day01&#160;as&#160;<tspan style="fill:#cd0000;">b</tspan><tspan style="fill:#00cd00;">b,&#160;day01&#160;as&#160;c</tspan>
 </text>
 <text x="10" y="220">where
 </text>
