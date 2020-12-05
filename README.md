@@ -68,6 +68,14 @@ Dependencies:
 
  * Stack https://docs.haskellstack.org/en/stable/README/
 
+### Postgres
+
+Dependencies:
+
+ * docker
+
+Make sure to run `docker-compose up` in the root folder to get a db running before running make.
+
 ### Ruby
 
 Dependencies:
