@@ -48,7 +48,7 @@ make
 
 Dependencies:
 
- * Clojure binary https://clojure.org/guides/getting_started
+ * Babashka: https://github.com/borkdude/babashka
 
 ### Crystal
 
