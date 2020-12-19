@@ -8,3 +8,5 @@
 ![day_03](./day_03_diff.svg)
 ## day_04
 ![day_04](./day_04_diff.svg)
+## day_05
+![day_05](./day_05_diff.svg)
