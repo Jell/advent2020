@@ -1,4 +1,4 @@
-# Advent of Code 2019
+# Advent of Code 2020
 
 |          |clojure   |crystal   |go        |haskell   |postgres  |ruby      |typescript|
 |:---:     |:---:     |:---:     |:---:     |:---:     |:---:     |:---:     |:---:     |
@@ -87,4 +87,3 @@ Dependencies:
 Dependencies:
 
  * Yarn https://yarnpkg.com/en/
-# advent2020
