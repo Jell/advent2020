@@ -1,2 +1,5 @@
 *.sql linguist-detectable=true
 *.sql linguist-language=sql
+
+*.cr linguist-detectable=true
+*.cr linguist-language=crystal
