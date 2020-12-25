@@ -3,7 +3,7 @@ services:
   aoc-db:
     image: postgres
     environment:
-      POSTGRES_USER: root
+      POSTGRES_USER: ${USER}
       POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - "5432:5432"

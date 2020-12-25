@@ -14,3 +14,5 @@
 ![day_06](./day_06_diff.svg)
 ## day_07
 ![day_07](./day_07_diff.svg)
+## day_08
+![day_08](./day_08_diff.svg)

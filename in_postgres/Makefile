@@ -7,7 +7,7 @@ DIFFS := $(shell ls | grep -e "day_.._part_." | grep -o "day_.." | uniq)
 .PHONY: $(MAIN_FILES) $(DIFFS) README.md
 
 $(MAIN_FILES):
-	psql -h localhost -U root postgres < $@
+	psql -h localhost -U $(USER) $(USER) < $@
 
 README.md:
 	echo "# In Postgres\n" > README.md

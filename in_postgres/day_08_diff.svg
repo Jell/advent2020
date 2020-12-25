@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="920">
+<desc>Source file</desc>
+<defs><style type="text/css">
+<![CDATA[
+rect { fill:#ffffff; } 
+g { font-size: 10pt; font-family: Courier New; white-space: pre; }
+]]>
+</style></defs><g>
+<rect x="0" y="0" width="100%" height="100%"/>
+<text x="10" y="20"></text>
+<text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_08_part_1.sql&#160;b/day_08_part_2.sql</tspan>
+</text>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;5427f6d..41ddcb0&#160;100644</tspan>
+</text>
+<text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_08_part_1.sql</tspan>
+</text>
+<text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_08_part_2.sql</tspan>
+</text>
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-17,26&#160;+17,35&#160;@@</tspan>&#160;with&#160;recursive&#160;program&#160;as&#160;(
+</text>
+<text x="10" y="120">&#160;&#160;from&#160;day08.inputs,
+</text>
+<text x="10" y="140">&#160;&#160;lateral&#160;(select&#160;split_part(line_value,&#160;'&#160;',&#160;1),
+</text>
+<text x="10" y="160">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;split_part(line_value,&#160;'&#160;',&#160;2)::int)&#160;as&#160;instruction(op,&#160;arg)
+</text>
+<text x="10" y="180">),&#160;<tspan style="fill:#cd0000;">runtime(iteration,</tspan><tspan style="fill:#00cd00;">potential_fix&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="200"><tspan style="fill:#00cd00;">&#160;&#160;&#160;select&#160;line_number&#160;as&#160;fix_line_number,</tspan>
+</text>
+<text x="10" y="220"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case&#160;op</tspan>
+</text>
+<text x="10" y="240"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;'jmp'&#160;then&#160;'nop'</tspan>
+</text>
+<text x="10" y="260"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;'jmp'&#160;end</tspan>
+</text>
+<text x="10" y="280"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;as&#160;fix_op</tspan>
+</text>
+<text x="10" y="300"><tspan style="fill:#00cd00;">&#160;&#160;&#160;from&#160;program</tspan>
+</text>
+<text x="10" y="320"><tspan style="fill:#00cd00;">&#160;&#160;&#160;where&#160;op&#160;=&#160;ANY('{&quot;nop&quot;,&#160;&quot;jmp&quot;}'::text[])</tspan>
+</text>
+<text x="10" y="340"><tspan style="fill:#00cd00;">),&#160;runtime(fix_line_number,&#160;fix_op,&#160;iteration,</tspan>&#160;instruction,&#160;pointer,&#160;accumulator,&#160;<tspan style="fill:#cd0000;">lines)</tspan><tspan style="fill:#00cd00;">lines,&#160;success)</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="360">&#160;&#160;&#160;select&#160;<tspan style="fill:#00cd00;">fix_line_number,&#160;fix_op,</tspan>&#160;0,&#160;'',&#160;1,&#160;0,&#160;<tspan style="fill:#cd0000;">'{}'::bigint[]</tspan><tspan style="fill:#00cd00;">'{}'::bigint[],&#160;false&#160;from&#160;potential_fix</tspan>
+</text>
+<text x="10" y="380">&#160;&#160;&#160;union
+</text>
+<text x="10" y="400">&#160;&#160;&#160;select&#160;<tspan style="fill:#00cd00;">fix_line_number,</tspan>
+</text>
+<text x="10" y="420"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;fix_op,</tspan>
+</text>
+<text x="10" y="440">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;iteration+1,
+</text>
+<text x="10" y="460">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_value,
+</text>
+<text x="10" y="480">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<tspan style="fill:#00cd00;">next_line.number,</tspan>
+</text>
+<text x="10" y="500">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case&#160;<tspan style="fill:#cd0000;">op</tspan>
+</text>
+<text x="10" y="520"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;'jmp'&#160;then&#160;pointer&#160;+&#160;arg</tspan>
+</text>
+<text x="10" y="540"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;pointer&#160;+&#160;1</tspan>
+</text>
+<text x="10" y="560"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end,</tspan>
+</text>
+<text x="10" y="580"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case&#160;op</tspan><tspan style="fill:#00cd00;">debugged.op</tspan>
+</text>
+<text x="10" y="600">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;'acc'&#160;then&#160;accumulator&#160;+&#160;arg
+</text>
+<text x="10" y="620">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;accumulator
+</text>
+<text x="10" y="640">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end,
+</text>
+<text x="10" y="660">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;array_append(lines,&#160;<tspan style="fill:#cd0000;">line_number)</tspan><tspan style="fill:#00cd00;">line_number),</tspan>
+</text>
+<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;not&#160;exists&#160;(select&#160;1&#160;from&#160;program&#160;where&#160;line_number&#160;=&#160;next_line.number)</tspan>
+</text>
+<text x="10" y="700">&#160;&#160;&#160;from&#160;runtime,
+</text>
+<text x="10" y="720">&#160;&#160;&#160;lateral&#160;(select&#160;line_number,&#160;line_value,&#160;op,&#160;arg&#160;from&#160;program&#160;where&#160;line_number&#160;=&#160;pointer)&#160;as&#160;<tspan style="fill:#cd0000;">instruction</tspan><tspan style="fill:#00cd00;">instruction,</tspan>
+</text>
+<text x="10" y="740"><tspan style="fill:#00cd00;">&#160;&#160;&#160;lateral&#160;(select&#160;case&#160;when&#160;line_number&#160;=&#160;fix_line_number&#160;then&#160;fix_op&#160;else&#160;op&#160;end&#160;as&#160;op)&#160;as&#160;debugged,</tspan>
+</text>
+<text x="10" y="760"><tspan style="fill:#00cd00;">&#160;&#160;&#160;lateral&#160;(select&#160;case&#160;debugged.op&#160;when&#160;'jmp'&#160;then&#160;pointer&#160;+&#160;arg&#160;else&#160;pointer&#160;+&#160;1&#160;end)&#160;as&#160;next_line(number)</tspan>
+</text>
+<text x="10" y="780">&#160;&#160;&#160;where&#160;iteration&#160;&lt;&#160;<tspan style="fill:#cd0000;">1000</tspan><tspan style="fill:#00cd00;">10000</tspan>
+</text>
+<text x="10" y="800">&#160;&#160;&#160;and&#160;not&#160;(line_number&#160;=&#160;ANY(lines))
+</text>
+<text x="10" y="820">)&#160;select&#160;concat('Day&#160;08&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;accumulator)
+</text>
+<text x="10" y="840">&#160;&#160;from&#160;runtime
+</text>
+<text x="10" y="860">&#160;&#160;<tspan style="fill:#cd0000;">order&#160;by&#160;iteration&#160;desc</tspan>
+</text>
+<text x="10" y="880"><tspan style="fill:#cd0000;">&#160;&#160;limit&#160;1</tspan><tspan style="fill:#00cd00;">where&#160;success&#160;=&#160;true</tspan>
+</text>
+<text x="10" y="900">;
+</text>
+</g>
+</svg>
+<!-- SVG generated by ansifilter 2.15, http://www.andre-simon.de/ -->
