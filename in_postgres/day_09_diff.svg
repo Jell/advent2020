@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="820">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="980">
 <desc>Source file</desc>
 <defs><style type="text/css">
 <![CDATA[
@@ -12,7 +12,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_09_part_1.sql&#160;b/day_09_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;7267e6f..d6d36e7&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;7267e6f..a4f2e89&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_09_part_1.sql</tspan>
 </text>
@@ -34,7 +34,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="240">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;array_agg(ARRAY[previous.number,&#160;other_previous.number])&#160;filter&#160;(where&#160;previous.number&#160;+&#160;other_previous.number&#160;=&#160;i.line_value)&#160;as&#160;matches
 </text>
-<text x="10" y="260"><tspan style="fill:#00cdcd;">@@&#160;-26,9&#160;+26,27&#160;@@</tspan>&#160;with&#160;checksums&#160;as&#160;(
+<text x="10" y="260"><tspan style="fill:#00cdcd;">@@&#160;-26,9&#160;+26,35&#160;@@</tspan>&#160;with&#160;checksums&#160;as&#160;(
 </text>
 <text x="10" y="280">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;other_previous.line_number&#160;&gt;&#160;previous.line_number)&#160;as&#160;other_previous(number)
 </text>
@@ -54,41 +54,57 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="440">&#160;&#160;limit&#160;1
 </text>
-<text x="10" y="460"><tspan style="fill:#00cd00;">),&#160;potential_hack(l,min,max,acc)&#160;as&#160;(</tspan>
+<text x="10" y="460"><tspan style="fill:#00cd00;">),&#160;potential_hack(l,min,max,acc,&#160;target_value)&#160;as&#160;(</tspan>
 </text>
-<text x="10" y="480"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;0,&#160;9223372036854775807::bigint,&#160;0::bigint,&#160;0::bigint</tspan>
+<text x="10" y="480"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;0,&#160;9223372036854775807::bigint,&#160;0::bigint,&#160;0::bigint,&#160;(select&#160;value&#160;from&#160;broken)</tspan>
 </text>
-<text x="10" y="500"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+<text x="10" y="500"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;(</tspan>
 </text>
-<text x="10" y="520"><tspan style="fill:#00cd00;">&#160;&#160;(with&#160;prev_gen&#160;as&#160;(select&#160;*&#160;from&#160;potential_hack)</tspan>
+<text x="10" y="520"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;with&#160;new_iteration&#160;as&#160;(</tspan>
 </text>
-<text x="10" y="540"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;l+1,&#160;i.value,&#160;i.value,&#160;i.value</tspan>
+<text x="10" y="540"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;select&#160;l+1&#160;as&#160;l,</tspan>
 </text>
-<text x="10" y="560"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;prev_gen,</tspan>
+<text x="10" y="560"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;potential_hack.min&#160;as&#160;prev_min,</tspan>
 </text>
-<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;line_value&#160;from&#160;day09.inputs&#160;where&#160;line_number&#160;=&#160;l+1)&#160;as&#160;i(value)</tspan>
+<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;potential_hack.max&#160;as&#160;prev_max,</tspan>
 </text>
-<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;i.value&#160;&lt;=&#160;(select&#160;value&#160;from&#160;broken)</tspan>
+<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;potential_hack.acc&#160;as&#160;prev_acc,</tspan>
 </text>
-<text x="10" y="620"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+<text x="10" y="620"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;i.value&#160;as&#160;new_value,</tspan>
 </text>
-<text x="10" y="640"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;l+1,&#160;least(i.value,&#160;prev_gen.min),&#160;greatest(i.value,&#160;prev_gen.max),&#160;prev_gen.acc&#160;+&#160;i.value</tspan>
+<text x="10" y="640"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;target_value</tspan>
 </text>
-<text x="10" y="660"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;prev_gen,</tspan>
+<text x="10" y="660"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;from&#160;potential_hack,</tspan>
 </text>
-<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;line_value&#160;from&#160;day09.inputs&#160;where&#160;line_number&#160;=&#160;l+1)&#160;as&#160;i(value)</tspan>
+<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;lateral&#160;(select&#160;line_value&#160;from&#160;day09.inputs&#160;where&#160;line_number&#160;=&#160;l+1)&#160;as&#160;i(value)</tspan>
 </text>
-<text x="10" y="700"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;prev_gen.acc&#160;+&#160;i.value&#160;&lt;=&#160;(select&#160;value&#160;from&#160;broken)</tspan>
+<text x="10" y="700"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;)</tspan>
 </text>
-<text x="10" y="720"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+<text x="10" y="720"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;l,&#160;new_value,&#160;new_value,&#160;new_value,&#160;target_value</tspan>
 </text>
-<text x="10" y="740"><tspan style="fill:#00cd00;">)&#160;select&#160;concat('Day&#160;09&#160;-&#160;Part&#160;2:&#160;',&#160;potential_hack.min&#160;+&#160;potential_hack.max)</tspan>
+<text x="10" y="740"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;new_iteration</tspan>
 </text>
-<text x="10" y="760"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;potential_hack</tspan>
+<text x="10" y="760"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;where&#160;new_value&#160;&lt;=&#160;target_value</tspan>
 </text>
-<text x="10" y="780"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;acc&#160;=&#160;(select&#160;value&#160;from&#160;broken)</tspan>
+<text x="10" y="780"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;union</tspan>
 </text>
-<text x="10" y="800">;
+<text x="10" y="800"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;l,&#160;least(prev_min,&#160;new_value),&#160;greatest(prev_max,&#160;new_value),&#160;prev_acc&#160;+&#160;new_value,&#160;target_value</tspan>
+</text>
+<text x="10" y="820"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;new_iteration</tspan>
+</text>
+<text x="10" y="840"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;where&#160;prev_acc&#160;+&#160;new_value&#160;&lt;=&#160;target_value</tspan>
+</text>
+<text x="10" y="860"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="880"><tspan style="fill:#00cd00;">)&#160;select&#160;concat('Day&#160;09&#160;-&#160;Part&#160;2:&#160;',&#160;potential_hack.min&#160;+&#160;potential_hack.max)</tspan>
+</text>
+<text x="10" y="900"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;potential_hack</tspan>
+</text>
+<text x="10" y="920"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;acc&#160;=&#160;target_value</tspan>
+</text>
+<text x="10" y="940"><tspan style="fill:#00cd00;">&#160;&#160;limit&#160;1</tspan>
+</text>
+<text x="10" y="960">;
 </text>
 </g>
 </svg>

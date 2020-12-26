@@ -32,22 +32,29 @@ with recursive checksums as (
   where matches is null
   order by line_number ASC
   limit 1
-), potential_hack(l,min,max,acc) as (
-  select 0, 9223372036854775807::bigint, 0::bigint, 0::bigint
-  union
-  (with prev_gen as (select * from potential_hack)
-  select l+1, i.value, i.value, i.value
-  from prev_gen,
-  lateral (select line_value from day09.inputs where line_number = l+1) as i(value)
-  where i.value <= (select value from broken)
-  union
-  select l+1, least(i.value, prev_gen.min), greatest(i.value, prev_gen.max), prev_gen.acc + i.value
-  from prev_gen,
-  lateral (select line_value from day09.inputs where line_number = l+1) as i(value)
-  where prev_gen.acc + i.value <= (select value from broken)
+), potential_hack(l,min,max,acc, target_value) as (
+  select 0, 9223372036854775807::bigint, 0::bigint, 0::bigint, (select value from broken)
+  union (
+    with new_iteration as (
+      select l+1 as l,
+             potential_hack.min as prev_min,
+             potential_hack.max as prev_max,
+             potential_hack.acc as prev_acc,
+             i.value as new_value,
+             target_value
+      from potential_hack,
+      lateral (select line_value from day09.inputs where line_number = l+1) as i(value)
+    )
+    select l, new_value, new_value, new_value, target_value
+    from new_iteration
+    where new_value <= target_value
+    union
+    select l, least(prev_min, new_value), greatest(prev_max, new_value), prev_acc + new_value, target_value
+    from new_iteration
+    where prev_acc + new_value <= target_value
   )
 ) select concat('Day 09 - Part 2: ', potential_hack.min + potential_hack.max)
   from potential_hack
-  where acc = (select value from broken)
+  where acc = target_value
   limit 1
 ;
