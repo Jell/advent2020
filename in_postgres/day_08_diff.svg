@@ -12,13 +12,13 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_08_part_1.sql&#160;b/day_08_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;5427f6d..41ddcb0&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;5427f6d..2717249&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_08_part_1.sql</tspan>
 </text>
 <text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_08_part_2.sql</tspan>
 </text>
-<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-17,26&#160;+17,35&#160;@@</tspan>&#160;with&#160;recursive&#160;program&#160;as&#160;(
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-17,26&#160;+17,36&#160;@@</tspan>&#160;with&#160;recursive&#160;program&#160;as&#160;(
 </text>
 <text x="10" y="120">&#160;&#160;from&#160;day08.inputs,
 </text>
@@ -94,9 +94,9 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="840">&#160;&#160;from&#160;runtime
 </text>
-<text x="10" y="860">&#160;&#160;<tspan style="fill:#cd0000;">order&#160;by&#160;iteration&#160;desc</tspan>
+<text x="10" y="860">&#160;&#160;<tspan style="fill:#cd0000;">order&#160;by&#160;iteration&#160;desc</tspan><tspan style="fill:#00cd00;">where&#160;success&#160;=&#160;true</tspan>
 </text>
-<text x="10" y="880"><tspan style="fill:#cd0000;">&#160;&#160;limit&#160;1</tspan><tspan style="fill:#00cd00;">where&#160;success&#160;=&#160;true</tspan>
+<text x="10" y="880">&#160;&#160;limit&#160;1
 </text>
 <text x="10" y="900">;
 </text>
