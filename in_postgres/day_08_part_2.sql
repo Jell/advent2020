@@ -48,4 +48,5 @@ with recursive program as (
 ) select concat('Day 08 - Part 2: ', accumulator)
   from runtime
   where success = true
+  limit 1
 ;
