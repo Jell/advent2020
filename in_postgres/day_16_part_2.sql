@@ -58,7 +58,8 @@ with recursive parts as (
   select *
   from nearby_tickets
   where not exists (select 1 from invalid_fields where invalid_fields.ticket_id = nearby_tickets.ticket_id)
-), initial_constraints as (select pos,
+), initial_constraints as (
+  select pos,
          rules.field
   from valid_tickets
   cross join rules
