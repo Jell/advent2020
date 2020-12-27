@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="980">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="1060">
 <desc>Source file</desc>
 <defs><style type="text/css">
 <![CDATA[
@@ -12,13 +12,13 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_17_part_1.sql&#160;b/day_17_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;541e1fe..a9541f8&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;105c7df..1e6cb8b&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_17_part_1.sql</tspan>
 </text>
 <text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_17_part_2.sql</tspan>
 </text>
-<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-13,39&#160;+13,43&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day17.inputs;
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-13,42&#160;+13,47&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day17.inputs;
 </text>
 <text x="10" y="120">\timing&#160;on
 </text>
@@ -52,59 +52,67 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="420">&#160;&#160;union&#160;(
 </text>
-<text x="10" y="440">&#160;&#160;--&#160;trick:&#160;can&#160;only&#160;reference&#160;to&#160;system&#160;once,&#160;so&#160;use&#160;another&#160;with&#160;to&#160;cache&#160;it
+<text x="10" y="440">&#160;&#160;&#160;&#160;--&#160;trick:&#160;can&#160;only&#160;reference&#160;to&#160;system&#160;once,&#160;so&#160;use&#160;another&#160;with&#160;to&#160;cache&#160;it
 </text>
-<text x="10" y="460">&#160;&#160;with&#160;prev_gen&#160;as&#160;(select&#160;*&#160;from&#160;system)
+<text x="10" y="460">&#160;&#160;&#160;&#160;with&#160;prev_gen&#160;as&#160;(select&#160;*&#160;from&#160;system)
 </text>
-<text x="10" y="480">&#160;&#160;select&#160;gen&#160;+&#160;1,&#160;next_gen.x,&#160;next_gen.y,&#160;<tspan style="fill:#cd0000;">next_gen.z</tspan><tspan style="fill:#00cd00;">next_gen.z,&#160;next_gen.w</tspan>
+<text x="10" y="480">&#160;&#160;&#160;&#160;select&#160;gen&#160;+&#160;1,&#160;next_gen.x,&#160;next_gen.y,&#160;<tspan style="fill:#cd0000;">next_gen.z</tspan><tspan style="fill:#00cd00;">next_gen.z,&#160;next_gen.w</tspan>
 </text>
-<text x="10" y="500">&#160;&#160;from&#160;prev_gen
+<text x="10" y="500">&#160;&#160;&#160;&#160;from&#160;prev_gen
 </text>
-<text x="10" y="520">&#160;&#160;cross&#160;join&#160;offsets,
+<text x="10" y="520">&#160;&#160;&#160;&#160;cross&#160;join&#160;offsets,
 </text>
-<text x="10" y="540">&#160;&#160;lateral&#160;(select&#160;prev_gen.x&#160;+&#160;offsets.x,
+<text x="10" y="540">&#160;&#160;&#160;&#160;lateral&#160;(select&#160;prev_gen.x&#160;+&#160;offsets.x,
 </text>
-<text x="10" y="560">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prev_gen.y&#160;+&#160;offsets.y,
+<text x="10" y="560">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prev_gen.y&#160;+&#160;offsets.y,
 </text>
-<text x="10" y="580">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prev_gen.z&#160;+&#160;<tspan style="fill:#cd0000;">offsets.z)</tspan><tspan style="fill:#00cd00;">offsets.z,</tspan>
+<text x="10" y="580">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prev_gen.z&#160;+&#160;<tspan style="fill:#cd0000;">offsets.z)</tspan><tspan style="fill:#00cd00;">offsets.z,</tspan>
 </text>
-<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prev_gen.w&#160;+&#160;offsets.w)</tspan>&#160;as&#160;<tspan style="fill:#cd0000;">next_gen(x,y,z),</tspan><tspan style="fill:#00cd00;">next_gen(x,y,z,w),</tspan>
+<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;prev_gen.w&#160;+&#160;offsets.w)</tspan>&#160;as&#160;<tspan style="fill:#cd0000;">next_gen(x,y,z),</tspan><tspan style="fill:#00cd00;">next_gen(x,y,z,w),</tspan>
 </text>
-<text x="10" y="620">&#160;&#160;lateral&#160;(select&#160;prev_gen.x&#160;=&#160;next_gen.x
+<text x="10" y="620">&#160;&#160;&#160;&#160;lateral&#160;(select&#160;prev_gen.x&#160;=&#160;next_gen.x
 </text>
-<text x="10" y="640">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;prev_gen.y&#160;=&#160;next_gen.y
+<text x="10" y="640">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;prev_gen.y&#160;=&#160;next_gen.y
 </text>
-<text x="10" y="660">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;prev_gen.z&#160;=&#160;<tspan style="fill:#cd0000;">next_gen.z)</tspan><tspan style="fill:#00cd00;">next_gen.z</tspan>
+<text x="10" y="660">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;prev_gen.z&#160;=&#160;<tspan style="fill:#cd0000;">next_gen.z)</tspan><tspan style="fill:#00cd00;">next_gen.z</tspan>
 </text>
-<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;prev_gen.w&#160;=&#160;next_gen.w)</tspan>&#160;as&#160;active(yes)
+<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;prev_gen.w&#160;=&#160;next_gen.w)</tspan>&#160;as&#160;active(yes),
 </text>
-<text x="10" y="700">&#160;&#160;where&#160;(select&#160;count(*)
+<text x="10" y="700">&#160;&#160;&#160;&#160;lateral&#160;(select&#160;count(*)
 </text>
-<text x="10" y="720">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;offsets
+<text x="10" y="720">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;offsets
 </text>
-<text x="10" y="740">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;exists&#160;(select&#160;1&#160;from&#160;prev_gen
+<text x="10" y="740">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;exists&#160;(select&#160;1&#160;from&#160;prev_gen
 </text>
-<text x="10" y="760">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;prev_gen.x&#160;=&#160;next_gen.x&#160;+&#160;offsets.x
+<text x="10" y="760">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;prev_gen.x&#160;=&#160;next_gen.x&#160;+&#160;offsets.x
 </text>
-<text x="10" y="780">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;&#160;&#160;prev_gen.y&#160;=&#160;next_gen.y&#160;+&#160;offsets.y
+<text x="10" y="780">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;&#160;&#160;prev_gen.y&#160;=&#160;next_gen.y&#160;+&#160;offsets.y
 </text>
-<text x="10" y="800">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;&#160;&#160;prev_gen.z&#160;=&#160;next_gen.z&#160;+&#160;<tspan style="fill:#cd0000;">offsets.z)</tspan><tspan style="fill:#00cd00;">offsets.z</tspan>
+<text x="10" y="800">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;&#160;&#160;prev_gen.z&#160;=&#160;next_gen.z&#160;+&#160;<tspan style="fill:#cd0000;">offsets.z)</tspan><tspan style="fill:#00cd00;">offsets.z</tspan>
 </text>
-<text x="10" y="820"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;&#160;&#160;prev_gen.w&#160;=&#160;next_gen.w&#160;+&#160;offsets.w)</tspan>
+<text x="10" y="820"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;&#160;&#160;prev_gen.w&#160;=&#160;next_gen.w&#160;+&#160;offsets.w)</tspan>
 </text>
-<text x="10" y="840">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;(offsets.x,&#160;offsets.y,&#160;<tspan style="fill:#cd0000;">offsets.z)</tspan><tspan style="fill:#00cd00;">offsets.z,&#160;offsets.w)</tspan>&#160;!=&#160;<tspan style="fill:#cd0000;">(0,0,0)</tspan><tspan style="fill:#00cd00;">(0,0,0,0)</tspan>
+<text x="10" y="840">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;(offsets.x,&#160;offsets.y,&#160;<tspan style="fill:#cd0000;">offsets.z)</tspan><tspan style="fill:#00cd00;">offsets.z,&#160;offsets.w)</tspan>&#160;!=&#160;<tspan style="fill:#cd0000;">(0,0,0))</tspan><tspan style="fill:#00cd00;">(0,0,0,0))</tspan>&#160;as&#160;alive_neighbors(count)
 </text>
-<text x="10" y="860">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;)&#160;between&#160;(case&#160;when&#160;active.yes&#160;then&#160;2&#160;else&#160;3&#160;end)&#160;and&#160;3
+<text x="10" y="860">&#160;&#160;&#160;&#160;where&#160;gen&#160;&lt;&#160;6
 </text>
-<text x="10" y="880">&#160;&#160;and&#160;gen&#160;&lt;&#160;6)
+<text x="10" y="880">&#160;&#160;&#160;&#160;and&#160;case
 </text>
-<text x="10" y="900">)&#160;select&#160;concat('Day&#160;17&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;count(*))
+<text x="10" y="900">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;active.yes&#160;then&#160;alive_neighbors.count&#160;between&#160;2&#160;and&#160;3
 </text>
-<text x="10" y="920">&#160;&#160;from&#160;system
+<text x="10" y="920">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;alive_neighbors.count&#160;=&#160;3
 </text>
-<text x="10" y="940">&#160;&#160;where&#160;gen&#160;=&#160;6
+<text x="10" y="940">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end
 </text>
-<text x="10" y="960">;
+<text x="10" y="960">&#160;&#160;)
+</text>
+<text x="10" y="980">)&#160;select&#160;concat('Day&#160;17&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;count(*))
+</text>
+<text x="10" y="1000">&#160;&#160;from&#160;system
+</text>
+<text x="10" y="1020">&#160;&#160;where&#160;gen&#160;=&#160;6
+</text>
+<text x="10" y="1040">;
 </text>
 </g>
 </svg>

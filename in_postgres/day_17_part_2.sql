@@ -26,29 +26,33 @@ with recursive starting_cubes as (
 ), system(gen, x, y, z, w) as (
   select 0, * from starting_cubes
   union (
-  -- trick: can only reference to system once, so use another with to cache it
-  with prev_gen as (select * from system)
-  select gen + 1, next_gen.x, next_gen.y, next_gen.z, next_gen.w
-  from prev_gen
-  cross join offsets,
-  lateral (select prev_gen.x + offsets.x,
-                  prev_gen.y + offsets.y,
-                  prev_gen.z + offsets.z,
-                  prev_gen.w + offsets.w) as next_gen(x,y,z,w),
-  lateral (select prev_gen.x = next_gen.x
-              and prev_gen.y = next_gen.y
-              and prev_gen.z = next_gen.z
-              and prev_gen.w = next_gen.w) as active(yes)
-  where (select count(*)
-         from offsets
-         where exists (select 1 from prev_gen
-                       where prev_gen.x = next_gen.x + offsets.x
-                       and   prev_gen.y = next_gen.y + offsets.y
-                       and   prev_gen.z = next_gen.z + offsets.z
-                       and   prev_gen.w = next_gen.w + offsets.w)
-         and (offsets.x, offsets.y, offsets.z, offsets.w) != (0,0,0,0)
-         ) between (case when active.yes then 2 else 3 end) and 3
-  and gen < 6)
+    -- trick: can only reference to system once, so use another with to cache it
+    with prev_gen as (select * from system)
+    select gen + 1, next_gen.x, next_gen.y, next_gen.z, next_gen.w
+    from prev_gen
+    cross join offsets,
+    lateral (select prev_gen.x + offsets.x,
+                    prev_gen.y + offsets.y,
+                    prev_gen.z + offsets.z,
+                    prev_gen.w + offsets.w) as next_gen(x,y,z,w),
+    lateral (select prev_gen.x = next_gen.x
+                and prev_gen.y = next_gen.y
+                and prev_gen.z = next_gen.z
+                and prev_gen.w = next_gen.w) as active(yes),
+    lateral (select count(*)
+             from offsets
+             where exists (select 1 from prev_gen
+                           where prev_gen.x = next_gen.x + offsets.x
+                           and   prev_gen.y = next_gen.y + offsets.y
+                           and   prev_gen.z = next_gen.z + offsets.z
+                           and   prev_gen.w = next_gen.w + offsets.w)
+             and (offsets.x, offsets.y, offsets.z, offsets.w) != (0,0,0,0)) as alive_neighbors(count)
+    where gen < 6
+    and case
+        when active.yes then alive_neighbors.count between 2 and 3
+        else alive_neighbors.count = 3
+        end
+  )
 ) select concat('Day 17 - Part 2: ', count(*))
   from system
   where gen = 6
