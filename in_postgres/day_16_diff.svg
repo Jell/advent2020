@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="1700">
+<desc>Source file</desc>
+<defs><style type="text/css">
+<![CDATA[
+rect { fill:#ffffff; } 
+g { font-size: 10pt; font-family: Courier New; white-space: pre; }
+]]>
+</style></defs><g>
+<rect x="0" y="0" width="100%" height="100%"/>
+<text x="10" y="20"></text>
+<text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_16_part_1.sql&#160;b/day_16_part_2.sql</tspan>
+</text>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;b583d24..56c0b8f&#160;100644</tspan>
+</text>
+<text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_16_part_1.sql</tspan>
+</text>
+<text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_16_part_2.sql</tspan>
+</text>
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,7&#160;+12,7&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day16.inputs;
+</text>
+<text x="10" y="120">
+</text>
+<text x="10" y="140">\timing&#160;on
+</text>
+<text x="10" y="160">
+</text>
+<text x="10" y="180">with&#160;<tspan style="fill:#00cd00;">recursive</tspan>&#160;parts&#160;as&#160;(
+</text>
+<text x="10" y="200">&#160;&#160;select&#160;line_number,
+</text>
+<text x="10" y="220">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_value&#160;as&#160;string,
+</text>
+<text x="10" y="240">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;count(*)&#160;filter&#160;(where&#160;line_value&#160;=&#160;'')&#160;over&#160;(order&#160;by&#160;line_number)&#160;as&#160;part
+</text>
+<text x="10" y="260"><tspan style="fill:#00cdcd;">@@&#160;-30,9&#160;+30,17&#160;@@</tspan>&#160;with&#160;parts&#160;as&#160;(
+</text>
+<text x="10" y="280">&#160;&#160;lateral&#160;(select&#160;regexp_matches(string,&#160;'^([^:]+):&#160;(\d+)-(\d+)&#160;or&#160;(\d+)-(\d+)$'))&#160;as&#160;rule
+</text>
+<text x="10" y="300">&#160;&#160;where&#160;part&#160;=&#160;0
+</text>
+<text x="10" y="320">&#160;&#160;and&#160;string&#160;!=&#160;''
+</text>
+<text x="10" y="340"><tspan style="fill:#00cd00;">),&#160;my_ticket&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="360"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;row_number()&#160;over&#160;(partition&#160;by&#160;line_number)&#160;as&#160;pos,</tspan>
+</text>
+<text x="10" y="380"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;field.value::int&#160;as&#160;field_value</tspan>
+</text>
+<text x="10" y="400"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;parts,</tspan>
+</text>
+<text x="10" y="420"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;regexp_split_to_table(string,&#160;','))&#160;as&#160;field(value)</tspan>
+</text>
+<text x="10" y="440"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;part&#160;=&#160;1</tspan>
+</text>
+<text x="10" y="460"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;string&#160;!=&#160;''</tspan>
+</text>
+<text x="10" y="480">),&#160;nearby_tickets&#160;as&#160;(
+</text>
+<text x="10" y="500">&#160;&#160;select&#160;line_number&#160;as&#160;ticket_id,
+</text>
+<text x="10" y="520">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;field.value::int&#160;as&#160;<tspan style="fill:#cd0000;">field_value</tspan><tspan style="fill:#00cd00;">field_value,</tspan>
+</text>
+<text x="10" y="540"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;row_number()&#160;over&#160;(partition&#160;by&#160;line_number)&#160;as&#160;pos</tspan>
+</text>
+<text x="10" y="560">&#160;&#160;from&#160;parts,
+</text>
+<text x="10" y="580">&#160;&#160;lateral&#160;(select&#160;regexp_split_to_table(string,&#160;','))&#160;as&#160;field(value)
+</text>
+<text x="10" y="600">&#160;&#160;where&#160;part&#160;=&#160;2
+</text>
+<text x="10" y="620"><tspan style="fill:#00cdcd;">@@&#160;-46,6&#160;+54,53&#160;@@</tspan>&#160;with&#160;parts&#160;as&#160;(
+</text>
+<text x="10" y="640">&#160;&#160;&#160;&#160;where&#160;nearby_tickets.field_value&#160;between&#160;rules.range1_min&#160;and&#160;rules.range1_max
+</text>
+<text x="10" y="660">&#160;&#160;&#160;&#160;or&#160;&#160;&#160;&#160;nearby_tickets.field_value&#160;between&#160;rules.range2_min&#160;and&#160;rules.range2_max
+</text>
+<text x="10" y="680">&#160;&#160;)
+</text>
+<text x="10" y="700"><tspan style="fill:#00cd00;">),&#160;valid_tickets&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="720"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;*</tspan>
+</text>
+<text x="10" y="740"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;nearby_tickets</tspan>
+</text>
+<text x="10" y="760"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;not&#160;exists&#160;(select&#160;1&#160;from&#160;invalid_fields&#160;where&#160;invalid_fields.ticket_id&#160;=&#160;nearby_tickets.ticket_id)</tspan>
+</text>
+<text x="10" y="780"><tspan style="fill:#00cd00;">),&#160;initial_constraints&#160;as&#160;(select&#160;pos,</tspan>
+</text>
+<text x="10" y="800"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;rules.field</tspan>
+</text>
+<text x="10" y="820"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;valid_tickets</tspan>
+</text>
+<text x="10" y="840"><tspan style="fill:#00cd00;">&#160;&#160;cross&#160;join&#160;rules</tspan>
+</text>
+<text x="10" y="860"><tspan style="fill:#00cd00;">&#160;&#160;group&#160;by&#160;pos,&#160;rules.field</tspan>
+</text>
+<text x="10" y="880"><tspan style="fill:#00cd00;">&#160;&#160;having&#160;count(*)&#160;=&#160;count(*)&#160;filter&#160;(</tspan>
+</text>
+<text x="10" y="900"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;where&#160;field_value&#160;between&#160;rules.range1_min&#160;and&#160;rules.range1_max</tspan>
+</text>
+<text x="10" y="920"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;or&#160;&#160;&#160;&#160;field_value&#160;between&#160;rules.range2_min&#160;and&#160;rules.range2_max</tspan>
+</text>
+<text x="10" y="940"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="960"><tspan style="fill:#00cd00;">),&#160;solver(gen,&#160;pos,&#160;field)&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="980"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;0,&#160;*</tspan>
+</text>
+<text x="10" y="1000"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;initial_constraints</tspan>
+</text>
+<text x="10" y="1020"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;not&#160;exists&#160;(</tspan>
+</text>
+<text x="10" y="1040"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;1&#160;from&#160;initial_constraints&#160;other</tspan>
+</text>
+<text x="10" y="1060"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;where&#160;other.pos&#160;=&#160;initial_constraints.pos</tspan>
+</text>
+<text x="10" y="1080"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;and&#160;other.field&#160;!=&#160;initial_constraints.field</tspan>
+</text>
+<text x="10" y="1100"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="1120"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="1140"><tspan style="fill:#00cd00;">&#160;&#160;(</tspan>
+</text>
+<text x="10" y="1160"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;with&#160;solved(gen,&#160;pos,&#160;field)&#160;as&#160;(table&#160;solver)</tspan>
+</text>
+<text x="10" y="1180"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;(select&#160;max(gen)+1&#160;from&#160;solved),&#160;initial_constraints.*</tspan>
+</text>
+<text x="10" y="1200"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;initial_constraints</tspan>
+</text>
+<text x="10" y="1220"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;left&#160;outer&#160;join&#160;solved&#160;is_solved&#160;on&#160;is_solved.field&#160;=&#160;initial_constraints.field</tspan>
+</text>
+<text x="10" y="1240"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;where&#160;not&#160;exists&#160;(</tspan>
+</text>
+<text x="10" y="1260"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;select&#160;1&#160;from&#160;initial_constraints&#160;other</tspan>
+</text>
+<text x="10" y="1280"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;where&#160;other.pos&#160;=&#160;initial_constraints.pos</tspan>
+</text>
+<text x="10" y="1300"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;and&#160;other.field&#160;not&#160;in&#160;(select&#160;field&#160;from&#160;solved)</tspan>
+</text>
+<text x="10" y="1320"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;and&#160;other.pos&#160;not&#160;in&#160;(select&#160;pos&#160;from&#160;solved)</tspan>
+</text>
+<text x="10" y="1340"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;and&#160;other.field&#160;!=&#160;initial_constraints.field</tspan>
+</text>
+<text x="10" y="1360"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;)&#160;and&#160;(is_solved.pos&#160;is&#160;null&#160;or&#160;is_solved.pos&#160;=&#160;initial_constraints.pos)</tspan>
+</text>
+<text x="10" y="1380"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="1400"><tspan style="fill:#00cd00;">),&#160;my_ticket_solution&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="1420"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;rules.field,&#160;solved_pos.value&#160;as&#160;field_pos,&#160;solved_value.value::bigint&#160;as&#160;field_value</tspan>
+</text>
+<text x="10" y="1440"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;rules,</tspan>
+</text>
+<text x="10" y="1460"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;pos&#160;from&#160;solver&#160;where&#160;rules.field&#160;=&#160;solver.field&#160;limit&#160;1)&#160;as&#160;solved_pos(value),</tspan>
+</text>
+<text x="10" y="1480"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;field_value&#160;from&#160;my_ticket&#160;where&#160;my_ticket.pos&#160;=&#160;solved_pos.value)&#160;as&#160;solved_value(value)</tspan>
+</text>
+<text x="10" y="1500"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;rules.field&#160;like&#160;'departure%'</tspan>
+</text>
+<text x="10" y="1520"><tspan style="fill:#00cd00;">),&#160;product(seen,&#160;acc)&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="1540"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;array[]::text[],&#160;1::bigint</tspan>
+</text>
+<text x="10" y="1560"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="1580"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;array_append(seen,&#160;field),&#160;acc*next.field_value</tspan>
+</text>
+<text x="10" y="1600"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;product,</tspan>
+</text>
+<text x="10" y="1620"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;field_value,&#160;field&#160;from&#160;my_ticket_solution&#160;where&#160;not&#160;field&#160;=&#160;ANY(seen)&#160;limit&#160;1)&#160;as&#160;next</tspan>
+</text>
+<text x="10" y="1640">)&#160;select&#160;concat('Day&#160;16&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;<tspan style="fill:#cd0000;">sum(field_value))</tspan><tspan style="fill:#00cd00;">max(acc))</tspan>
+</text>
+<text x="10" y="1660">&#160;&#160;from&#160;<tspan style="fill:#cd0000;">invalid_fields</tspan><tspan style="fill:#00cd00;">product</tspan>
+</text>
+<text x="10" y="1680">;
+</text>
+</g>
+</svg>
+<!-- SVG generated by ansifilter 2.15, http://www.andre-simon.de/ -->
