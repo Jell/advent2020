@@ -14,8 +14,6 @@ VACUUM ANALYZE day15.inputs;
 
 create extension if not exists hstore;
 
-\set FETCH_COUNT 1000
-
 with recursive inputs as (
   select ordinality i, n::bigint
   from day15.inputs,
