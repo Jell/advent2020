@@ -22,3 +22,5 @@
 ![day_16](./day_16_diff.svg)
 ## day_17
 ![day_17](./day_17_diff.svg)
+## day_18
+![day_18](./day_18_diff.svg)

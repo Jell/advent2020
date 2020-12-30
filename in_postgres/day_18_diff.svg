@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="1540">
+<desc>Source file</desc>
+<defs><style type="text/css">
+<![CDATA[
+rect { fill:#ffffff; } 
+g { font-size: 10pt; font-family: Courier New; white-space: pre; }
+]]>
+</style></defs><g>
+<rect x="0" y="0" width="100%" height="100%"/>
+<text x="10" y="20"></text>
+<text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_18_part_1.sql&#160;b/day_18_part_2.sql</tspan>
+</text>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;0b8115c..282961d&#160;100644</tspan>
+</text>
+<text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_18_part_1.sql</tspan>
+</text>
+<text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_18_part_2.sql</tspan>
+</text>
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,55&#160;+12,35&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day18.inputs;
+</text>
+<text x="10" y="120">
+</text>
+<text x="10" y="140">\timing&#160;on
+</text>
+<text x="10" y="160">
+</text>
+<text x="10" y="180">with&#160;recursive&#160;<tspan style="fill:#cd0000;">formulas</tspan><tspan style="fill:#00cd00;">calculator(line_number,&#160;computation,&#160;reduce_parens,&#160;reduce_plus,&#160;reduce_times_parens,&#160;reduce_times_top)</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="200">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">line_number&#160;as&#160;formula_id,</tspan>
+</text>
+<text x="10" y="220"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;c.value&#160;as&#160;token,</tspan>
+</text>
+<text x="10" y="240"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;row_number()&#160;over&#160;(partition&#160;by&#160;line_number)&#160;as&#160;pos</tspan>
+</text>
+<text x="10" y="260"><tspan style="fill:#cd0000;">&#160;&#160;from&#160;day18.inputs,</tspan>
+</text>
+<text x="10" y="280"><tspan style="fill:#cd0000;">&#160;&#160;lateral&#160;(select&#160;regexp_split_to_table(line_value,&#160;''))&#160;as&#160;c(value)</tspan>
+</text>
+<text x="10" y="300"><tspan style="fill:#cd0000;">&#160;&#160;where&#160;c.value&#160;!=&#160;'&#160;'</tspan>
+</text>
+<text x="10" y="320"><tspan style="fill:#cd0000;">),&#160;calculator(i,&#160;id,&#160;val_stack,&#160;op_stack,&#160;val,&#160;op)&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="340"><tspan style="fill:#cd0000;">&#160;&#160;select&#160;0,&#160;formula_id,&#160;array[]::bigint[],</tspan><tspan style="fill:#00cd00;">*,&#160;array[]::text[],&#160;array[]::text[],</tspan>&#160;array[]::text[],&#160;<tspan style="fill:#cd0000;">0::bigint,&#160;'+'</tspan><tspan style="fill:#00cd00;">array[]::text[]</tspan>&#160;from&#160;<tspan style="fill:#cd0000;">formulas</tspan><tspan style="fill:#00cd00;">day18.inputs</tspan>
+</text>
+<text x="10" y="360">&#160;&#160;union
+</text>
+<text x="10" y="380">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">i+1,</tspan>
+</text>
+<text x="10" y="400"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;id,</tspan>
+</text>
+<text x="10" y="420"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;--&#160;val_stack</tspan><tspan style="fill:#00cd00;">calculator.line_number,</tspan>
+</text>
+<text x="10" y="440">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case
+</text>
+<text x="10" y="460">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;<tspan style="fill:#cd0000;">next.token&#160;=&#160;'('</tspan><tspan style="fill:#00cd00;">parens&#160;is&#160;not&#160;null</tspan>
+</text>
+<text x="10" y="480">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;then&#160;<tspan style="fill:#cd0000;">array_prepend(val,&#160;val_stack)</tspan><tspan style="fill:#00cd00;">concat(parens[1],&#160;parens[2],&#160;parens[3])</tspan>
+</text>
+<text x="10" y="500">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;<tspan style="fill:#cd0000;">next.token&#160;=&#160;')'</tspan><tspan style="fill:#00cd00;">plus&#160;is&#160;not&#160;null</tspan>
+</text>
+<text x="10" y="520">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;then&#160;<tspan style="fill:#cd0000;">(select&#160;array_agg(i)&#160;from&#160;(select&#160;unnest(val_stack)&#160;offset&#160;1)&#160;x(i))</tspan><tspan style="fill:#00cd00;">concat(plus[1],&#160;(plus[2]::bigint&#160;+&#160;plus[3]::bigint)::text,&#160;plus[4])</tspan>
+</text>
+<text x="10" y="540"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;times_parens&#160;is&#160;not&#160;null</tspan>
+</text>
+<text x="10" y="560"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;then&#160;concat(times_parens[1],&#160;(times_parens[2]::bigint&#160;*&#160;times_parens[3]::bigint)::text,&#160;times_parens[4])</tspan>
+</text>
+<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;times_top&#160;is&#160;not&#160;null</tspan>
+</text>
+<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;then&#160;concat((times_top[1]::bigint&#160;*&#160;times_top[2]::bigint)::text,&#160;times_top[3])</tspan>
+</text>
+<text x="10" y="620">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;<tspan style="fill:#cd0000;">val_stack</tspan><tspan style="fill:#00cd00;">computation</tspan>
+</text>
+<text x="10" y="640">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end,
+</text>
+<text x="10" y="660">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<tspan style="fill:#cd0000;">--&#160;op_stack</tspan>
+</text>
+<text x="10" y="680"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case&#160;when&#160;next.token&#160;=&#160;'('&#160;then&#160;array_prepend(op,&#160;op_stack)</tspan>
+</text>
+<text x="10" y="700"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;=&#160;')'</tspan>
+</text>
+<text x="10" y="720"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;then&#160;(select&#160;array_agg(i)&#160;from&#160;(select&#160;unnest(op_stack)&#160;offset&#160;1)&#160;x(i))</tspan>
+</text>
+<text x="10" y="740"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;op_stack</tspan>
+</text>
+<text x="10" y="760"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end,</tspan>
+</text>
+<text x="10" y="780"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;--&#160;val</tspan>
+</text>
+<text x="10" y="800"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case</tspan>
+</text>
+<text x="10" y="820"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;=&#160;'('&#160;then&#160;0</tspan>
+</text>
+<text x="10" y="840"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;~&#160;'\d'&#160;and&#160;op&#160;=&#160;'+'&#160;then&#160;next.token::bigint&#160;+&#160;val</tspan>
+</text>
+<text x="10" y="860"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;~&#160;'\d'&#160;and&#160;op&#160;=&#160;'*'&#160;then&#160;next.token::bigint&#160;*&#160;val</tspan>
+</text>
+<text x="10" y="880"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;=&#160;')'</tspan>
+</text>
+<text x="10" y="900"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;then&#160;(case&#160;(select&#160;unnest(op_stack)&#160;limit&#160;1)</tspan>
+</text>
+<text x="10" y="920"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;'+'&#160;then&#160;val&#160;+&#160;(select&#160;unnest(val_stack)&#160;limit&#160;1)</tspan>
+</text>
+<text x="10" y="940"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;'*'&#160;then&#160;val&#160;*&#160;(select&#160;unnest(val_stack)&#160;limit&#160;1)</tspan>
+</text>
+<text x="10" y="960"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end)</tspan>
+</text>
+<text x="10" y="980"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;val</tspan>
+</text>
+<text x="10" y="1000"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end,</tspan>
+</text>
+<text x="10" y="1020"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;--&#160;op</tspan>
+</text>
+<text x="10" y="1040"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case</tspan>
+</text>
+<text x="10" y="1060"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;=&#160;'('&#160;then&#160;'+'</tspan>
+</text>
+<text x="10" y="1080"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;~&#160;'[+*]'&#160;then&#160;next.token</tspan>
+</text>
+<text x="10" y="1100"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;next.token&#160;=&#160;')'&#160;then&#160;(select&#160;unnest(op_stack)&#160;limit&#160;1)</tspan>
+</text>
+<text x="10" y="1120"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;op</tspan>
+</text>
+<text x="10" y="1140"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end</tspan>
+</text>
+<text x="10" y="1160"><tspan style="fill:#cd0000;">&#160;&#160;from&#160;calculator,</tspan>
+</text>
+<text x="10" y="1180"><tspan style="fill:#cd0000;">&#160;&#160;lateral&#160;(select&#160;*&#160;from&#160;formulas&#160;where&#160;pos&#160;=&#160;i+1&#160;and&#160;formula_id&#160;=&#160;id)&#160;as&#160;next</tspan>
+</text>
+<text x="10" y="1200"><tspan style="fill:#cd0000;">)&#160;select&#160;concat('Day&#160;18&#160;-&#160;Part&#160;1:&#160;',&#160;sum(val))</tspan><tspan style="fill:#00cd00;">reduction.parens,</tspan>
+</text>
+<text x="10" y="1220"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;reduction.plus,</tspan>
+</text>
+<text x="10" y="1240"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;reduction.times_parens,</tspan>
+</text>
+<text x="10" y="1260"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;reduction.times_top</tspan>
+</text>
+<text x="10" y="1280">&#160;&#160;from&#160;calculator,
+</text>
+<text x="10" y="1300">&#160;&#160;lateral&#160;(select&#160;<tspan style="fill:#cd0000;">max(i)</tspan><tspan style="fill:#00cd00;">(select&#160;regexp_matches(computation,&#160;'^(.*?)\((\d+)\)(.*)$'))&#160;as&#160;parens,</tspan>
+</text>
+<text x="10" y="1320"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(select&#160;regexp_matches(computation,&#160;'^(.*?)(\d+)&#160;\+&#160;(\d+)(.*)$'))&#160;as&#160;plus,</tspan>
+</text>
+<text x="10" y="1340"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(select&#160;regexp_matches(computation,&#160;'^(.*?\()(\d+)&#160;\*&#160;(\d+)((?:&#160;\*&#160;\d+)*\).*)$'))&#160;as&#160;times_parens,</tspan>
+</text>
+<text x="10" y="1360"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(select&#160;regexp_matches(computation,&#160;'^(\d+)&#160;\*&#160;(\d+)((?:&#160;\*&#160;\d+)*)$'))&#160;as&#160;times_top</tspan>
+</text>
+<text x="10" y="1380">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#cd0000;">calculator&#160;c&#160;where&#160;c.id&#160;=&#160;calculator.id)</tspan><tspan style="fill:#00cd00;">(VALUES&#160;(1))&#160;x)</tspan>&#160;as&#160;<tspan style="fill:#cd0000;">iteration(last)</tspan><tspan style="fill:#00cd00;">reduction</tspan>
+</text>
+<text x="10" y="1400"><tspan style="fill:#00cd00;">)&#160;select&#160;concat('Day&#160;18&#160;-&#160;Part&#160;2:&#160;',&#160;sum(computation::bigint))</tspan>
+</text>
+<text x="10" y="1420"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;calculator</tspan>
+</text>
+<text x="10" y="1440">&#160;&#160;where&#160;<tspan style="fill:#cd0000;">i&#160;=&#160;iteration.last</tspan><tspan style="fill:#00cd00;">reduce_parens&#160;is&#160;null</tspan>
+</text>
+<text x="10" y="1460"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;reduce_plus&#160;is&#160;null</tspan>
+</text>
+<text x="10" y="1480"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;reduce_times_parens&#160;is&#160;null</tspan>
+</text>
+<text x="10" y="1500"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;reduce_times_top&#160;is&#160;null</tspan>
+</text>
+<text x="10" y="1520">;
+</text>
+</g>
+</svg>
+<!-- SVG generated by ansifilter 2.15, http://www.andre-simon.de/ -->
