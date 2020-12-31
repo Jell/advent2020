@@ -23,7 +23,7 @@ with recursive inputs as (
    from inputs
    order by i desc
    limit 1)
-  union
+  union all
   select game.i+1,
          game.i - (coalesce(mem->(game.n::text), game.i::text))::bigint,
          mem || hstore(array[game.n::text, game.i::text])
