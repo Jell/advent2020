@@ -21,7 +21,7 @@ with recursive adapters(jolt) as (
 ), combos(gen, node, total) as (
   select 0::bigint, 0::bigint, 1::numeric
   union (
-  with current_state as (table combos)
+    with current_state as (table combos)
     select gen+1, node, total from current_state
     union
     select (select max(gen) from current_state)+1, jolt, link_count
