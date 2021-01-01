@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="1240">
+<desc>Source file</desc>
+<defs><style type="text/css">
+<![CDATA[
+rect { fill:#ffffff; } 
+g { font-size: 10pt; font-family: Courier New; white-space: pre; }
+]]>
+</style></defs><g>
+<rect x="0" y="0" width="100%" height="100%"/>
+<text x="10" y="20"></text>
+<text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_14_part_1.sql&#160;b/day_14_part_2.sql</tspan>
+</text>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;6e33e91..5bf2de4&#160;100644</tspan>
+</text>
+<text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_14_part_1.sql</tspan>
+</text>
+<text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_14_part_2.sql</tspan>
+</text>
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,31&#160;+12,53&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day14.inputs;
+</text>
+<text x="10" y="120">
+</text>
+<text x="10" y="140">\timing&#160;on
+</text>
+<text x="10" y="160">
+</text>
+<text x="10" y="180">with&#160;<tspan style="fill:#00cd00;">recursive</tspan>&#160;program&#160;as&#160;(
+</text>
+<text x="10" y="200">&#160;&#160;select&#160;line_number,
+</text>
+<text x="10" y="220">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;case
+</text>
+<text x="10" y="240">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;set_mask&#160;is&#160;not&#160;null&#160;then&#160;'set_mask'
+</text>
+<text x="10" y="260">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;assign&#160;is&#160;not&#160;null&#160;then&#160;'assign'
+</text>
+<text x="10" y="280">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end&#160;as&#160;op,
+</text>
+<text x="10" y="300">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<tspan style="fill:#00cd00;">regexp_replace(set_mask[1],&#160;'[01]',&#160;'0','g')&#160;as&#160;set_float_mask,</tspan>
+</text>
+<text x="10" y="320">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;replace(set_mask[1],&#160;'X',&#160;'0')::bit(36)&#160;as&#160;set_or_mask,
+</text>
+<text x="10" y="340">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<tspan style="fill:#cd0000;">replace(set_mask[1],&#160;'X',&#160;'1')::bit(36)&#160;as&#160;set_and_mask,</tspan>
+</text>
+<text x="10" y="360"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assign[1]::numeric</tspan><tspan style="fill:#00cd00;">assign[1]::bigint::bit(36)</tspan>&#160;as&#160;assign_pointer,
+</text>
+<text x="10" y="380">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assign[2]::bigint::bit(36)&#160;as&#160;assign_value
+</text>
+<text x="10" y="400">&#160;&#160;from&#160;day14.inputs,
+</text>
+<text x="10" y="420">&#160;&#160;lateral&#160;(select&#160;(select&#160;regexp_match(line_value,&#160;'^mask&#160;=&#160;([01X]+)$'))&#160;as&#160;set_mask,
+</text>
+<text x="10" y="440">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(select&#160;regexp_match(line_Value,&#160;'^mem\[(\d+)\]&#160;=&#160;(\d+)$'))&#160;as&#160;assign)&#160;as&#160;instruction
+</text>
+<text x="10" y="460">),&#160;<tspan style="fill:#cd0000;">end_registers</tspan><tspan style="fill:#00cd00;">float_masks_iterations(id,&#160;m)</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="480">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">distinct&#160;on&#160;(assign_pointer)</tspan>
+</text>
+<text x="10" y="500"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assign_pointer</tspan><tspan style="fill:#00cd00;">line_number,&#160;set_float_mask&#160;from&#160;program&#160;where&#160;op&#160;=&#160;'set_mask'</tspan>
+</text>
+<text x="10" y="520"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;(</tspan>
+</text>
+<text x="10" y="540"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;with&#160;previous</tspan>&#160;as&#160;<tspan style="fill:#cd0000;">pointer,</tspan>
+</text>
+<text x="10" y="560"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(assign_value&#160;&amp;&#160;last_mask.and)</tspan><tspan style="fill:#00cd00;">(table&#160;float_masks_iterations)</tspan>
+</text>
+<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;id,&#160;regexp_replace(m,&#160;'X',&#160;'1')</tspan>
+</text>
+<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;previous</tspan>
+</text>
+<text x="10" y="620"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;union</tspan>
+</text>
+<text x="10" y="640"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;id,&#160;regexp_replace(m,&#160;'X',&#160;'0')</tspan>
+</text>
+<text x="10" y="660"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;previous</tspan>
+</text>
+<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="700"><tspan style="fill:#00cd00;">),&#160;float_masks&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="720"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;id,&#160;m::bit(36)&#160;as&#160;mask</tspan>
+</text>
+<text x="10" y="740"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;float_masks_iterations</tspan>
+</text>
+<text x="10" y="760"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;m&#160;~&#160;'^[01]+$'</tspan>
+</text>
+<text x="10" y="780"><tspan style="fill:#00cd00;">),&#160;all_registers&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="800"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;program.line_number,</tspan>
+</text>
+<text x="10" y="820"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(assign_pointer</tspan>&#160;|&#160;<tspan style="fill:#cd0000;">last_mask.or</tspan><tspan style="fill:#00cd00;">last_mask.or)&#160;#&#160;float_mask.mask&#160;as&#160;pointer,</tspan>
+</text>
+<text x="10" y="840"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;assign_value</tspan>&#160;as&#160;value
+</text>
+<text x="10" y="860">&#160;&#160;from&#160;program,
+</text>
+<text x="10" y="880">&#160;&#160;lateral&#160;(select&#160;<tspan style="fill:#00cd00;">last_mask.line_number,</tspan>
+</text>
+<text x="10" y="900">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;last_mask.set_or_mask&#160;as&#160;<tspan style="fill:#cd0000;">or,&#160;last_mask.set_and_mask&#160;as&#160;and</tspan><tspan style="fill:#00cd00;">or</tspan>
+</text>
+<text x="10" y="920">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;program&#160;last_mask
+</text>
+<text x="10" y="940">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;op&#160;=&#160;'set_mask'
+</text>
+<text x="10" y="960">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;last_mask.line_number&#160;&lt;&#160;program.line_number
+</text>
+<text x="10" y="980">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;order&#160;by&#160;last_mask.line_number&#160;desc
+</text>
+<text x="10" y="1000">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;limit&#160;1)&#160;as&#160;<tspan style="fill:#cd0000;">last_mask</tspan><tspan style="fill:#00cd00;">last_mask,</tspan>
+</text>
+<text x="10" y="1020"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;mask</tspan>
+</text>
+<text x="10" y="1040"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;float_masks</tspan>
+</text>
+<text x="10" y="1060"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;float_masks.id&#160;=&#160;last_mask.line_number)&#160;as&#160;float_mask</tspan>
+</text>
+<text x="10" y="1080">&#160;&#160;where&#160;op&#160;=&#160;'assign'
+</text>
+<text x="10" y="1100"><tspan style="fill:#00cd00;">),&#160;end_registers&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="1120"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;distinct&#160;on(pointer)&#160;pointer::bigint,&#160;value::bigint</tspan>
+</text>
+<text x="10" y="1140"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;all_registers</tspan>
+</text>
+<text x="10" y="1160">&#160;&#160;order&#160;by&#160;<tspan style="fill:#cd0000;">assign_pointer,</tspan><tspan style="fill:#00cd00;">pointer,</tspan>&#160;line_number&#160;desc
+</text>
+<text x="10" y="1180">)&#160;select&#160;concat('Day&#160;14&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;sum(value::bigint))
+</text>
+<text x="10" y="1200">&#160;&#160;from&#160;<tspan style="fill:#cd0000;">end_registers;</tspan><tspan style="fill:#00cd00;">end_registers</tspan>
+</text>
+<text x="10" y="1220"><tspan style="fill:#00cd00;">;</tspan>
+</text>
+</g>
+</svg>
+<!-- SVG generated by ansifilter 2.15, http://www.andre-simon.de/ -->

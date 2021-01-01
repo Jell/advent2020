@@ -12,7 +12,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_10_part_1.sql&#160;b/day_10_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;cb49772..6295ebb&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;cb49772..4cdc3d6&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_10_part_1.sql</tspan>
 </text>
@@ -42,9 +42,9 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="320">&#160;&#160;select&#160;<tspan style="fill:#00cd00;">0::bigint,&#160;0::bigint,&#160;1::numeric</tspan>
 </text>
-<text x="10" y="340"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;(</tspan>
+<text x="10" y="340"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;all&#160;(</tspan>
 </text>
-<text x="10" y="360"><tspan style="fill:#00cd00;">&#160;&#160;with&#160;current_state&#160;as&#160;(table&#160;combos)</tspan>
+<text x="10" y="360"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;with&#160;current_state&#160;as&#160;(table&#160;combos)</tspan>
 </text>
 <text x="10" y="380"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;gen+1,&#160;node,&#160;total&#160;from&#160;current_state</tspan>
 </text>
