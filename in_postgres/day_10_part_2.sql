@@ -20,7 +20,7 @@ with recursive adapters(jolt) as (
   select max(line_value) + 3 from day10.inputs
 ), combos(gen, node, total) as (
   select 0::bigint, 0::bigint, 1::numeric
-  union (
+  union all (
     with current_state as (table combos)
     select gen+1, node, total from current_state
     union
