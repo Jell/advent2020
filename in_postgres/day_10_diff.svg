@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="820">
+<desc>Source file</desc>
+<defs><style type="text/css">
+<![CDATA[
+rect { fill:#ffffff; } 
+g { font-size: 10pt; font-family: Courier New; white-space: pre; }
+]]>
+</style></defs><g>
+<rect x="0" y="0" width="100%" height="100%"/>
+<text x="10" y="20"></text>
+<text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_10_part_1.sql&#160;b/day_10_part_2.sql</tspan>
+</text>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;cb49772..6295ebb&#160;100644</tspan>
+</text>
+<text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_10_part_1.sql</tspan>
+</text>
+<text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_10_part_2.sql</tspan>
+</text>
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,18&#160;+12,32&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day10.inputs;
+</text>
+<text x="10" y="120">
+</text>
+<text x="10" y="140">\timing&#160;on
+</text>
+<text x="10" y="160">
+</text>
+<text x="10" y="180">with&#160;<tspan style="fill:#00cd00;">recursive</tspan>&#160;adapters(jolt)&#160;as&#160;(
+</text>
+<text x="10" y="200">&#160;&#160;select&#160;line_value&#160;from&#160;day10.inputs
+</text>
+<text x="10" y="220">&#160;&#160;union
+</text>
+<text x="10" y="240">&#160;&#160;select&#160;0
+</text>
+<text x="10" y="260">&#160;&#160;union
+</text>
+<text x="10" y="280">&#160;&#160;select&#160;max(line_value)&#160;+&#160;3&#160;from&#160;day10.inputs
+</text>
+<text x="10" y="300">),&#160;<tspan style="fill:#cd0000;">jolt_diffs(jolt,&#160;diff)</tspan><tspan style="fill:#00cd00;">combos(gen,&#160;node,&#160;total)</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="320">&#160;&#160;select&#160;<tspan style="fill:#00cd00;">0::bigint,&#160;0::bigint,&#160;1::numeric</tspan>
+</text>
+<text x="10" y="340"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;(</tspan>
+</text>
+<text x="10" y="360"><tspan style="fill:#00cd00;">&#160;&#160;with&#160;current_state&#160;as&#160;(table&#160;combos)</tspan>
+</text>
+<text x="10" y="380"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;gen+1,&#160;node,&#160;total&#160;from&#160;current_state</tspan>
+</text>
+<text x="10" y="400"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;union</tspan>
+</text>
+<text x="10" y="420"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;(select&#160;max(gen)&#160;from&#160;current_state)+1,</tspan>&#160;jolt,&#160;<tspan style="fill:#00cd00;">link_count</tspan>
+</text>
+<text x="10" y="440"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;(select&#160;*</tspan>
+</text>
+<text x="10" y="460"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;adapters</tspan>
+</text>
+<text x="10" y="480"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where</tspan>&#160;jolt&#160;<tspan style="fill:#cd0000;">-&#160;lag(jolt)&#160;over&#160;(order</tspan><tspan style="fill:#00cd00;">&gt;&#160;(select&#160;max(node)&#160;from&#160;current_state)</tspan>
+</text>
+<text x="10" y="500"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;order</tspan>&#160;by&#160;<tspan style="fill:#cd0000;">jolt)</tspan><tspan style="fill:#00cd00;">jolt&#160;asc&#160;limit&#160;1)&#160;as&#160;next_adapter,</tspan>
+</text>
+<text x="10" y="520"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;lateral&#160;(select&#160;(select&#160;sum(total)</tspan>
+</text>
+<text x="10" y="540">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;adapters
+</text>
+<text x="10" y="560">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<tspan style="fill:#00cd00;">join&#160;current_state&#160;on&#160;current_state.node&#160;=&#160;adapters.jolt</tspan>
+</text>
+<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;adapters.jolt&#160;between&#160;next_adapter.jolt&#160;-&#160;3</tspan>
+</text>
+<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;next_adapter.jolt&#160;-&#160;1))</tspan>
+</text>
+<text x="10" y="620"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;as&#160;total(link_count)</tspan>
+</text>
+<text x="10" y="640"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="660">)&#160;select&#160;<tspan style="fill:#cd0000;">concat(</tspan>
+</text>
+<text x="10" y="680"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;'Day</tspan><tspan style="fill:#00cd00;">concat('Day</tspan>&#160;10&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;<tspan style="fill:#cd0000;">count(*)&#160;filter&#160;(where&#160;diff&#160;=&#160;1)&#160;*</tspan>
+</text>
+<text x="10" y="700"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;count(*)&#160;filter&#160;(where&#160;diff</tspan><tspan style="fill:#00cd00;">total)</tspan>
+</text>
+<text x="10" y="720"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;combos</tspan>
+</text>
+<text x="10" y="740"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;node</tspan>&#160;=&#160;<tspan style="fill:#cd0000;">3)</tspan>
+</text>
+<text x="10" y="760"><tspan style="fill:#cd0000;">&#160;&#160;)</tspan><tspan style="fill:#00cd00;">(select&#160;max(jolt)</tspan>&#160;from&#160;<tspan style="fill:#cd0000;">jolt_diffs</tspan><tspan style="fill:#00cd00;">adapters)</tspan>
+</text>
+<text x="10" y="780"><tspan style="fill:#00cd00;">&#160;&#160;limit&#160;1</tspan>
+</text>
+<text x="10" y="800">;
+</text>
+</g>
+</svg>
+<!-- SVG generated by ansifilter 2.15, http://www.andre-simon.de/ -->
