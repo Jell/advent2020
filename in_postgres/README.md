@@ -26,3 +26,5 @@
 ![day_17](./day_17_diff.svg)
 ## day_18
 ![day_18](./day_18_diff.svg)
+## day_19
+![day_19](./day_19_diff.svg)

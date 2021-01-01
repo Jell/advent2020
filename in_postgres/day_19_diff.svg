@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="1160">
+<desc>Source file</desc>
+<defs><style type="text/css">
+<![CDATA[
+rect { fill:#ffffff; } 
+g { font-size: 10pt; font-family: Courier New; white-space: pre; }
+]]>
+</style></defs><g>
+<rect x="0" y="0" width="100%" height="100%"/>
+<text x="10" y="20"></text>
+<text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_19_part_1.sql&#160;b/day_19_part_2.sql</tspan>
+</text>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;e74f0a0..39d007b&#160;100644</tspan>
+</text>
+<text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_19_part_1.sql</tspan>
+</text>
+<text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_19_part_2.sql</tspan>
+</text>
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,16&#160;+12,34&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day19.inputs;
+</text>
+<text x="10" y="120">
+</text>
+<text x="10" y="140">\timing&#160;on
+</text>
+<text x="10" y="160">
+</text>
+<text x="10" y="180">with&#160;recursive&#160;<tspan style="fill:#cd0000;">rules</tspan><tspan style="fill:#00cd00;">rule8(i,&#160;pattern,&#160;next_val)</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="200">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">rule.parts[1]</tspan><tspan style="fill:#00cd00;">1,&#160;'(&#160;42&#160;)',&#160;'42&#160;42'</tspan>
+</text>
+<text x="10" y="220"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="240"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;i+1,&#160;concat(pattern,&#160;'&#160;|&#160;(&#160;',&#160;next_val,&#160;'&#160;)'),&#160;concat(next_val,&#160;'&#160;42')</tspan>
+</text>
+<text x="10" y="260"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;rule8</tspan>
+</text>
+<text x="10" y="280"><tspan style="fill:#00cd00;">),&#160;rule11(i,&#160;pattern,&#160;next_val)</tspan>&#160;as&#160;<tspan style="fill:#cd0000;">rule_id,</tspan>
+</text>
+<text x="10" y="300"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pattern.index</tspan><tspan style="fill:#00cd00;">(</tspan>
+</text>
+<text x="10" y="320"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;1,&#160;'(&#160;42&#160;31&#160;)',&#160;'42&#160;42&#160;31&#160;31'</tspan>
+</text>
+<text x="10" y="340"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="360"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;i+1,&#160;concat(pattern,&#160;'&#160;|&#160;(&#160;',&#160;next_val,&#160;'&#160;)'),&#160;concat('42&#160;',&#160;next_val,&#160;'&#160;31')</tspan>
+</text>
+<text x="10" y="380"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;rule11</tspan>
+</text>
+<text x="10" y="400"><tspan style="fill:#00cd00;">),&#160;fixed_inputs(rule_id,&#160;rule_pattern)</tspan>&#160;as&#160;<tspan style="fill:#cd0000;">index,</tspan>
+</text>
+<text x="10" y="420"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pattern.token</tspan><tspan style="fill:#00cd00;">(</tspan>
+</text>
+<text x="10" y="440"><tspan style="fill:#00cd00;">&#160;&#160;(select&#160;'8',&#160;pattern&#160;from&#160;rule8&#160;where&#160;i&#160;=&#160;8&#160;limit&#160;1)</tspan>
+</text>
+<text x="10" y="460"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="480"><tspan style="fill:#00cd00;">&#160;&#160;(select&#160;'11',&#160;pattern&#160;from&#160;rule11&#160;where&#160;i&#160;=&#160;5&#160;limit&#160;1)</tspan>
+</text>
+<text x="10" y="500"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="520"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;rule.parts[1]</tspan>&#160;as&#160;<tspan style="fill:#cd0000;">pattern_token</tspan><tspan style="fill:#00cd00;">rule_id,&#160;rule.parts[2]</tspan>
+</text>
+<text x="10" y="540">&#160;&#160;from&#160;day19.inputs,
+</text>
+<text x="10" y="560">&#160;&#160;lateral&#160;(select&#160;regexp_matches(line_value,&#160;'^(\d+):&#160;(.*)$'))&#160;as&#160;<tspan style="fill:#cd0000;">rule(parts),</tspan><tspan style="fill:#00cd00;">rule(parts)</tspan>
+</text>
+<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;rule.parts[1]&#160;&lt;&gt;&#160;'8'&#160;and&#160;rule.parts[1]&#160;&lt;&gt;&#160;'11'</tspan>
+</text>
+<text x="10" y="600"><tspan style="fill:#00cd00;">),&#160;rules&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="620"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;rule_id,</tspan>
+</text>
+<text x="10" y="640"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;lpad(pattern.index::text,&#160;3,&#160;'0')&#160;as&#160;index,</tspan>
+</text>
+<text x="10" y="660"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;pattern.token&#160;as&#160;pattern_token</tspan>
+</text>
+<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;fixed_inputs,</tspan>
+</text>
+<text x="10" y="700">&#160;&#160;lateral&#160;(select&#160;case
+</text>
+<text x="10" y="720">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;<tspan style="fill:#cd0000;">rule.parts[2]</tspan><tspan style="fill:#00cd00;">rule_pattern</tspan>&#160;~&#160;'&quot;a&quot;'&#160;then&#160;'a'
+</text>
+<text x="10" y="740">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;when&#160;<tspan style="fill:#cd0000;">rule.parts[2]</tspan><tspan style="fill:#00cd00;">rule_pattern</tspan>&#160;~&#160;'&quot;b&quot;'&#160;then&#160;'b'
+</text>
+<text x="10" y="760">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;else&#160;concat('(&#160;',&#160;<tspan style="fill:#cd0000;">rule.parts[2],</tspan><tspan style="fill:#00cd00;">rule_pattern,</tspan>&#160;'&#160;)')
+</text>
+<text x="10" y="780">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;end)&#160;as&#160;pattern_part(string),
+</text>
+<text x="10" y="800">&#160;&#160;lateral&#160;(select&#160;*
+</text>
+<text x="10" y="820">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;regexp_split_to_table(pattern_part.string,&#160;'&#160;')
+</text>
+<text x="10" y="840"><tspan style="fill:#00cdcd;">@@&#160;-31,7&#160;+49,7&#160;@@</tspan>&#160;with&#160;recursive&#160;rules&#160;as&#160;(
+</text>
+<text x="10" y="860">&#160;&#160;&#160;from&#160;day19.inputs
+</text>
+<text x="10" y="880">&#160;&#160;&#160;where&#160;line_value&#160;~&#160;'^(a|b)+$'
+</text>
+<text x="10" y="900">),&#160;rules_tree&#160;as&#160;(
+</text>
+<text x="10" y="920">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">index::text,</tspan><tspan style="fill:#00cd00;">index,</tspan>&#160;pattern_token&#160;from&#160;rules&#160;where&#160;rule_id&#160;=&#160;'0'
+</text>
+<text x="10" y="940">&#160;&#160;union
+</text>
+<text x="10" y="960">&#160;&#160;select&#160;concat(r.index::text,&#160;o.index::text),
+</text>
+<text x="10" y="980">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;coalesce(o.pattern_token,&#160;r.pattern_token)
+</text>
+<text x="10" y="1000"><tspan style="fill:#00cdcd;">@@&#160;-41,7&#160;+59,7&#160;@@</tspan>&#160;with&#160;recursive&#160;rules&#160;as&#160;(
+</text>
+<text x="10" y="1020">&#160;&#160;select&#160;concat('^',&#160;string_agg(pattern_token,&#160;''&#160;order&#160;by&#160;index),&#160;'$')&#160;pattern
+</text>
+<text x="10" y="1040">&#160;&#160;from&#160;rules_tree
+</text>
+<text x="10" y="1060">&#160;&#160;where&#160;not&#160;pattern_token&#160;~&#160;'\d+'
+</text>
+<text x="10" y="1080">)&#160;select&#160;concat('Day&#160;19&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;count(*))
+</text>
+<text x="10" y="1100">&#160;&#160;from&#160;regexp,&#160;messages
+</text>
+<text x="10" y="1120">&#160;&#160;where&#160;message&#160;~&#160;pattern
+</text>
+<text x="10" y="1140">;
+</text>
+</g>
+</svg>
+<!-- SVG generated by ansifilter 2.15, http://www.andre-simon.de/ -->
