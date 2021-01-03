@@ -53,14 +53,14 @@ with recursive tile_groups as (
          line_number,
          reverse(line_value) as line_value
   from (table original_tiles union table rotated_tiles union table vertical_flip_tiles) as tiles
-), all_possible_tiles_raw as (
+), all_possible_tiles as (
   table original_tiles
   union table rotated_tiles
   union table vertical_flip_tiles
   union table horizontal_flip_tiles
 ), all_possible_tile_ids as (
-  select distinct tile_id as id, original_tile_id from all_possible_tiles_raw
-), all_possible_tiles as (
+  select distinct tile_id as id, original_tile_id from all_possible_tiles
+), all_possible_tile_edges as (
   select id as tile_id,
          original_tile_id,
          top.line as top_line,
@@ -69,16 +69,16 @@ with recursive tile_groups as (
          side.right_line as right_line
   from all_possible_tile_ids tile_ids,
   lateral (select line_value
-           from all_possible_tiles_raw tiles
+           from all_possible_tiles tiles
            where tile_ids.id = tiles.tile_id
            order by line_number asc limit 1) as top(line),
   lateral (select line_value
-           from all_possible_tiles_raw tiles
+           from all_possible_tiles tiles
            where tile_ids.id = tiles.tile_id
            order by line_number desc limit 1) as bottom(line),
   lateral (select string_agg(left(line_value, 1), '' order by line_number) as left_line,
                   string_agg(right(line_value, 1), '' order by line_number) as right_line
-           from all_possible_tiles_raw tiles
+           from all_possible_tiles tiles
            where tile_ids.id = tiles.tile_id) as side
 ), tile_mesh as (
   select tiles.*,
@@ -86,21 +86,21 @@ with recursive tile_groups as (
          right_tile.tile_id as right_tile,
          top_tile.tile_id as top_tile,
          bottom_tile.tile_id as bottom_tile
-  from all_possible_tiles tiles
+  from all_possible_tile_edges tiles
   -- left
-  left outer join all_possible_tiles left_tile
+  left outer join all_possible_tile_edges left_tile
   on left_tile.right_line = tiles.left_line
   and left_tile.original_tile_id <> tiles.original_tile_id
   -- right
-  left outer join all_possible_tiles right_tile
+  left outer join all_possible_tile_edges right_tile
   on right_tile.left_line = tiles.right_line
   and right_tile.original_tile_id <> tiles.original_tile_id
   -- top
-  left outer join all_possible_tiles top_tile
+  left outer join all_possible_tile_edges top_tile
   on top_tile.bottom_line = tiles.top_line
   and top_tile.original_tile_id <> tiles.original_tile_id
   -- bottom
-  left outer join all_possible_tiles bottom_tile
+  left outer join all_possible_tile_edges bottom_tile
   on bottom_tile.top_line = tiles.bottom_line
   and bottom_tile.original_tile_id <> tiles.original_tile_id
 ), top_left_corners as (
@@ -114,7 +114,7 @@ with recursive tile_groups as (
          tile.line_number,
          substring(tile.line_value, 2, 8)
   from top_left_corners corner
-  join all_possible_tiles_raw tile
+  join all_possible_tiles tile
   on tile.tile_id = corner.tile_id
   and tile.line_number <> 1
   and tile.line_number <> 10
@@ -130,7 +130,7 @@ with recursive tile_groups as (
     from previous_tile
     join tile_mesh
     on tile_mesh.tile_id = previous_tile.next_tile_id
-    join all_possible_tiles_raw tile
+    join all_possible_tiles tile
     on tile.tile_id = previous_tile.next_tile_id
     and tile.line_number <> 1
     and tile.line_number <> 10
@@ -153,7 +153,7 @@ with recursive tile_groups as (
     from previous_tile
     join tile_mesh
     on tile_mesh.tile_id = previous_tile.next_tile_id
-    join all_possible_tiles_raw tile
+    join all_possible_tiles tile
     on tile.tile_id = previous_tile.next_tile_id
     and tile.line_number = previous_tile.original_line_number
   )
