@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="4200">
+<desc>Source file</desc>
+<defs><style type="text/css">
+<![CDATA[
+rect { fill:#ffffff; } 
+g { font-size: 10pt; font-family: Courier New; white-space: pre; }
+]]>
+</style></defs><g>
+<rect x="0" y="0" width="100%" height="100%"/>
+<text x="10" y="20"></text>
+<text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_20_part_1.sql&#160;b/day_20_part_2.sql</tspan>
+</text>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;19d2771..d997308&#160;100644</tspan>
+</text>
+<text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_20_part_1.sql</tspan>
+</text>
+<text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_20_part_2.sql</tspan>
+</text>
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,12&#160;+12,7&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day20.inputs;
+</text>
+<text x="10" y="120">
+</text>
+<text x="10" y="140">\timing&#160;on
+</text>
+<text x="10" y="160">
+</text>
+<text x="10" y="180"><tspan style="fill:#cd0000;">create&#160;aggregate&#160;day20.product(numeric)&#160;(</tspan>
+</text>
+<text x="10" y="200"><tspan style="fill:#cd0000;">&#160;&#160;&#160;sfunc&#160;=&#160;numeric_mul,</tspan>
+</text>
+<text x="10" y="220"><tspan style="fill:#cd0000;">&#160;&#160;&#160;stype&#160;=&#160;numeric</tspan>
+</text>
+<text x="10" y="240"><tspan style="fill:#cd0000;">);</tspan>with&#160;<tspan style="fill:#00cd00;">recursive</tspan>&#160;tile_groups&#160;as&#160;(
+</text>
+<text x="10" y="260">&#160;&#160;select&#160;coalesce(max(line_number)
+</text>
+<text x="10" y="280">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;filter&#160;(where&#160;line_value&#160;=&#160;'')
+</text>
+<text x="10" y="300">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;over&#160;(order&#160;by&#160;line_number),&#160;0)
+</text>
+<text x="10" y="320"><tspan style="fill:#00cdcd;">@@&#160;-26,69&#160;+21,170&#160;@@</tspan>&#160;with&#160;tile_groups&#160;as&#160;(
+</text>
+<text x="10" y="340">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_value
+</text>
+<text x="10" y="360">&#160;&#160;from&#160;day20.inputs
+</text>
+<text x="10" y="380">),&#160;tile_group_ids&#160;as&#160;(
+</text>
+<text x="10" y="400">&#160;&#160;select&#160;tile_group,&#160;<tspan style="fill:#cd0000;">tile_id[1]::bigint</tspan><tspan style="fill:#00cd00;">tile_id[1]</tspan>&#160;as&#160;tile_id
+</text>
+<text x="10" y="420">&#160;&#160;from&#160;tile_groups,
+</text>
+<text x="10" y="440">&#160;&#160;lateral&#160;(select&#160;regexp_matches(line_value,&#160;'Tile&#160;(\d+):'))&#160;as&#160;match(tile_id)
+</text>
+<text x="10" y="460">),&#160;<tspan style="fill:#cd0000;">tiles</tspan><tspan style="fill:#00cd00;">original_tiles</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="480">&#160;&#160;select&#160;tile_id,
+</text>
+<text x="10" y="500">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;<tspan style="fill:#00cd00;">tile_id&#160;as&#160;original_tile_id,</tspan>
+</text>
+<text x="10" y="520">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_number&#160;-&#160;tile_groups.tile_group::bigint&#160;-&#160;1&#160;as&#160;line_number,
+</text>
+<text x="10" y="540">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_value
+</text>
+<text x="10" y="560">&#160;&#160;from&#160;tile_groups
+</text>
+<text x="10" y="580">&#160;&#160;join&#160;tile_group_ids&#160;on&#160;tile_group_ids.tile_group&#160;=&#160;tile_groups.tile_group
+</text>
+<text x="10" y="600">&#160;&#160;where&#160;line_value&#160;&lt;&gt;&#160;''&#160;and&#160;not&#160;line_value&#160;~&#160;'Tile&#160;\d+:'
+</text>
+<text x="10" y="620">),&#160;<tspan style="fill:#cd0000;">tile_ids</tspan><tspan style="fill:#00cd00;">rotated_tiles&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="640"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;concat(tile_id,&#160;'-r')&#160;as&#160;tile_id,</tspan>
+</text>
+<text x="10" y="660"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;original_tile_id,</tspan>
+</text>
+<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;cell.idx&#160;as&#160;line_number,</tspan>
+</text>
+<text x="10" y="700"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;string_agg(cell.val,&#160;''&#160;order&#160;by&#160;line_number&#160;desc)&#160;as&#160;line_value</tspan>
+</text>
+<text x="10" y="720"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;original_tiles,</tspan>
+</text>
+<text x="10" y="740"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;*&#160;from&#160;regexp_split_to_table(line_value,&#160;'')</tspan>
+</text>
+<text x="10" y="760"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;with&#160;ordinality)&#160;as&#160;cell(val,&#160;idx)</tspan>
+</text>
+<text x="10" y="780"><tspan style="fill:#00cd00;">&#160;&#160;group&#160;by&#160;tile_id,&#160;original_tile_id,&#160;cell.idx</tspan>
+</text>
+<text x="10" y="800"><tspan style="fill:#00cd00;">),&#160;vertical_flip_tiles&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="820"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;concat(tile_id,&#160;'-v')&#160;as&#160;tile_id,</tspan>
+</text>
+<text x="10" y="840"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;original_tile_id,</tspan>
+</text>
+<text x="10" y="860"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;1&#160;+&#160;(select&#160;max(line_number)&#160;from&#160;original_tiles)&#160;-&#160;line_number&#160;as&#160;line_number,</tspan>
+</text>
+<text x="10" y="880"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_value</tspan>
+</text>
+<text x="10" y="900"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;(table&#160;original_tiles&#160;union&#160;table&#160;rotated_tiles)&#160;as&#160;tiles</tspan>
+</text>
+<text x="10" y="920"><tspan style="fill:#00cd00;">),&#160;horizontal_flip_tiles&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="940"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;concat(tile_id,&#160;'-h')&#160;as&#160;tile_id,</tspan>
+</text>
+<text x="10" y="960"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;original_tile_id,</tspan>
+</text>
+<text x="10" y="980"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_number,</tspan>
+</text>
+<text x="10" y="1000"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;reverse(line_value)&#160;as&#160;line_value</tspan>
+</text>
+<text x="10" y="1020"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;(table&#160;original_tiles&#160;union&#160;table&#160;rotated_tiles&#160;union&#160;table&#160;vertical_flip_tiles)&#160;as&#160;tiles</tspan>
+</text>
+<text x="10" y="1040"><tspan style="fill:#00cd00;">),&#160;all_possible_tiles_raw&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="1060"><tspan style="fill:#00cd00;">&#160;&#160;table&#160;original_tiles</tspan>
+</text>
+<text x="10" y="1080"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;table&#160;rotated_tiles</tspan>
+</text>
+<text x="10" y="1100"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;table&#160;vertical_flip_tiles</tspan>
+</text>
+<text x="10" y="1120"><tspan style="fill:#00cd00;">&#160;&#160;union&#160;table&#160;horizontal_flip_tiles</tspan>
+</text>
+<text x="10" y="1140"><tspan style="fill:#00cd00;">),&#160;all_possible_tile_ids</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="1160">&#160;&#160;select&#160;distinct&#160;tile_id&#160;as&#160;<tspan style="fill:#cd0000;">id</tspan><tspan style="fill:#00cd00;">id,&#160;original_tile_id</tspan>&#160;from&#160;<tspan style="fill:#cd0000;">tiles</tspan><tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>
+</text>
+<text x="10" y="1180">),&#160;<tspan style="fill:#cd0000;">tile_edges</tspan><tspan style="fill:#00cd00;">all_possible_tiles</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="1200">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">tile_ids.id,</tspan><tspan style="fill:#00cd00;">id&#160;as&#160;tile_id,</tspan>
+</text>
+<text x="10" y="1220"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;original_tile_id,</tspan>
+</text>
+<text x="10" y="1240">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;top.line&#160;as&#160;top_line,
+</text>
+<text x="10" y="1260"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;reverse(top.line)&#160;as&#160;top_line_reverse,</tspan>
+</text>
+<text x="10" y="1280">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bottom.line&#160;as&#160;bottom_line,
+</text>
+<text x="10" y="1300"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;reverse(bottom.line)&#160;as&#160;bottom_line_reverse,</tspan>
+</text>
+<text x="10" y="1320">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;side.left_line&#160;as&#160;left_line,
+</text>
+<text x="10" y="1340"><tspan style="fill:#cd0000;">reverse(side.left_line)&#160;as&#160;left_line_reverse,</tspan>&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;side.right_line&#160;as&#160;<tspan style="fill:#cd0000;">right_line,</tspan>
+</text>
+<text x="10" y="1360"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;reverse(side.right_line)&#160;as&#160;right_line_reverse</tspan><tspan style="fill:#00cd00;">right_line</tspan>
+</text>
+<text x="10" y="1380">&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tile_ids</tspan>&#160;tile_ids,
+</text>
+<text x="10" y="1400">&#160;&#160;lateral&#160;(select&#160;line_value
+</text>
+<text x="10" y="1420">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>&#160;tiles
+</text>
+<text x="10" y="1440">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;tile_ids.id&#160;=&#160;tiles.tile_id
+</text>
+<text x="10" y="1460">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;order&#160;by&#160;line_number&#160;asc&#160;limit&#160;1)&#160;as&#160;top(line),
+</text>
+<text x="10" y="1480">&#160;&#160;lateral&#160;(select&#160;line_value
+</text>
+<text x="10" y="1500">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>&#160;tiles
+</text>
+<text x="10" y="1520">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;tile_ids.id&#160;=&#160;tiles.tile_id
+</text>
+<text x="10" y="1540">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;order&#160;by&#160;line_number&#160;desc&#160;limit&#160;1)&#160;as&#160;bottom(line),
+</text>
+<text x="10" y="1560">&#160;&#160;lateral&#160;(select&#160;string_agg(left(line_value,&#160;1),&#160;''&#160;order&#160;by&#160;line_number)&#160;as&#160;left_line,
+</text>
+<text x="10" y="1580">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;string_agg(right(line_value,&#160;1),&#160;''&#160;order&#160;by&#160;line_number)&#160;as&#160;right_line
+</text>
+<text x="10" y="1600">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>&#160;tiles
+</text>
+<text x="10" y="1620">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;tile_ids.id&#160;=&#160;tiles.tile_id)&#160;as&#160;side
+</text>
+<text x="10" y="1640">),&#160;<tspan style="fill:#cd0000;">matching_edges</tspan><tspan style="fill:#00cd00;">tile_mesh</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="1660">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">a.id&#160;a_id,&#160;b.id&#160;b_id</tspan><tspan style="fill:#00cd00;">tiles.*,</tspan>
+</text>
+<text x="10" y="1680"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;left_tile.tile_id&#160;as&#160;left_tile,</tspan>
+</text>
+<text x="10" y="1700"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right_tile.tile_id&#160;as&#160;right_tile,</tspan>
+</text>
+<text x="10" y="1720"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;top_tile.tile_id&#160;as&#160;top_tile,</tspan>
+</text>
+<text x="10" y="1740"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bottom_tile.tile_id&#160;as&#160;bottom_tile</tspan>
+</text>
+<text x="10" y="1760">&#160;&#160;from&#160;<tspan style="fill:#cd0000;">tile_edges&#160;a</tspan><tspan style="fill:#00cd00;">all_possible_tiles&#160;tiles</tspan>
+</text>
+<text x="10" y="1780"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;left</tspan>
+</text>
+<text x="10" y="1800"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer</tspan>&#160;join&#160;<tspan style="fill:#cd0000;">tile_edges&#160;b</tspan><tspan style="fill:#00cd00;">all_possible_tiles&#160;left_tile</tspan>
+</text>
+<text x="10" y="1820">&#160;&#160;on&#160;<tspan style="fill:#cd0000;">array[</tspan>
+</text>
+<text x="10" y="1840"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.top_line,</tspan>
+</text>
+<text x="10" y="1860"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.top_line_reverse,</tspan>
+</text>
+<text x="10" y="1880"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.bottom_line,</tspan>
+</text>
+<text x="10" y="1900"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.bottom_line_reverse,</tspan>
+</text>
+<text x="10" y="1920"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.left_line,</tspan>
+</text>
+<text x="10" y="1940"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.left_line_reverse,</tspan>
+</text>
+<text x="10" y="1960"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.right_line,</tspan>
+</text>
+<text x="10" y="1980"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;a.right_line_reverse</tspan>
+</text>
+<text x="10" y="2000"><tspan style="fill:#cd0000;">&#160;&#160;]&#160;&amp;&amp;&#160;array[</tspan>
+</text>
+<text x="10" y="2020"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.top_line,</tspan>
+</text>
+<text x="10" y="2040"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.top_line_reverse,</tspan>
+</text>
+<text x="10" y="2060"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.bottom_line,</tspan>
+</text>
+<text x="10" y="2080"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.bottom_line_reverse,</tspan>
+</text>
+<text x="10" y="2100"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.left_line,</tspan>
+</text>
+<text x="10" y="2120"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.left_line_reverse,</tspan>
+</text>
+<text x="10" y="2140"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.right_line,</tspan>
+</text>
+<text x="10" y="2160"><tspan style="fill:#cd0000;">&#160;&#160;&#160;&#160;b.right_line_reverse</tspan>
+</text>
+<text x="10" y="2180"><tspan style="fill:#cd0000;">&#160;&#160;]</tspan><tspan style="fill:#00cd00;">left_tile.right_line&#160;=&#160;tiles.left_line</tspan>
+</text>
+<text x="10" y="2200"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;left_tile.original_tile_id&#160;&lt;&gt;&#160;tiles.original_tile_id</tspan>
+</text>
+<text x="10" y="2220"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;right</tspan>
+</text>
+<text x="10" y="2240"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tiles&#160;right_tile</tspan>
+</text>
+<text x="10" y="2260"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;right_tile.left_line&#160;=&#160;tiles.right_line</tspan>
+</text>
+<text x="10" y="2280"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;right_tile.original_tile_id&#160;&lt;&gt;&#160;tiles.original_tile_id</tspan>
+</text>
+<text x="10" y="2300"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;top</tspan>
+</text>
+<text x="10" y="2320"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tiles&#160;top_tile</tspan>
+</text>
+<text x="10" y="2340"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;top_tile.bottom_line&#160;=&#160;tiles.top_line</tspan>
+</text>
+<text x="10" y="2360">&#160;&#160;and&#160;<tspan style="fill:#cd0000;">a.id</tspan><tspan style="fill:#00cd00;">top_tile.original_tile_id</tspan>&#160;&lt;&gt;&#160;<tspan style="fill:#cd0000;">b.id</tspan><tspan style="fill:#00cd00;">tiles.original_tile_id</tspan>
+</text>
+<text x="10" y="2380"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;bottom</tspan>
+</text>
+<text x="10" y="2400"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tiles&#160;bottom_tile</tspan>
+</text>
+<text x="10" y="2420"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;bottom_tile.top_line&#160;=&#160;tiles.bottom_line</tspan>
+</text>
+<text x="10" y="2440"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;bottom_tile.original_tile_id&#160;&lt;&gt;&#160;tiles.original_tile_id</tspan>
+</text>
+<text x="10" y="2460"><tspan style="fill:#00cd00;">),&#160;top_left_corners&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="2480"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;*&#160;from&#160;tile_mesh</tspan>
+</text>
+<text x="10" y="2500"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;left_tile&#160;is&#160;null&#160;and&#160;top_tile&#160;is&#160;null</tspan>
+</text>
+<text x="10" y="2520">),&#160;<tspan style="fill:#cd0000;">corners</tspan><tspan style="fill:#00cd00;">left_column_tiles(map_id,&#160;next_tile_id,&#160;right_tile,&#160;line_number,&#160;original_line_number,&#160;line_value)</tspan>&#160;as&#160;(
+</text>
+<text x="10" y="2540">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">a_id</tspan><tspan style="fill:#00cd00;">corner.tile_id,</tspan>
+</text>
+<text x="10" y="2560"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;corner.bottom_tile,</tspan>
+</text>
+<text x="10" y="2580"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;corner.right_tile,</tspan>
+</text>
+<text x="10" y="2600"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tile.line_number&#160;-&#160;1,</tspan>
+</text>
+<text x="10" y="2620"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tile.line_number,</tspan>
+</text>
+<text x="10" y="2640"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;substring(tile.line_value,&#160;2,&#160;8)</tspan>
+</text>
+<text x="10" y="2660">&#160;&#160;from&#160;<tspan style="fill:#cd0000;">matching_edges</tspan>
+</text>
+<text x="10" y="2680"><tspan style="fill:#cd0000;">&#160;&#160;group</tspan><tspan style="fill:#00cd00;">top_left_corners&#160;corner</tspan>
+</text>
+<text x="10" y="2700"><tspan style="fill:#00cd00;">&#160;&#160;join&#160;all_possible_tiles_raw&#160;tile</tspan>
+</text>
+<text x="10" y="2720"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;tile.tile_id&#160;=&#160;corner.tile_id</tspan>
+</text>
+<text x="10" y="2740"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;tile.line_number&#160;&lt;&gt;&#160;1</tspan>
+</text>
+<text x="10" y="2760"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;tile.line_number&#160;&lt;&gt;&#160;10</tspan>
+</text>
+<text x="10" y="2780"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="2800"><tspan style="fill:#00cd00;">&#160;&#160;(</tspan>
+</text>
+<text x="10" y="2820"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;with&#160;previous_tile&#160;as&#160;(table&#160;left_column_tiles)</tspan>
+</text>
+<text x="10" y="2840"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;previous_tile.map_id,</tspan>
+</text>
+<text x="10" y="2860"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bottom_tile,</tspan>
+</text>
+<text x="10" y="2880"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tile_mesh.right_tile,</tspan>
+</text>
+<text x="10" y="2900"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;(select&#160;max(line_number)&#160;from&#160;previous_tile)&#160;+&#160;tile.line_number&#160;-&#160;1,</tspan>
+</text>
+<text x="10" y="2920"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tile.line_number,</tspan>
+</text>
+<text x="10" y="2940"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;substring(tile.line_value,&#160;2,&#160;8)</tspan>
+</text>
+<text x="10" y="2960"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;previous_tile</tspan>
+</text>
+<text x="10" y="2980"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;tile_mesh</tspan>
+</text>
+<text x="10" y="3000"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile_mesh.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
+</text>
+<text x="10" y="3020"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;all_possible_tiles_raw&#160;tile</tspan>
+</text>
+<text x="10" y="3040"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
+</text>
+<text x="10" y="3060"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;and&#160;tile.line_number&#160;&lt;&gt;&#160;1</tspan>
+</text>
+<text x="10" y="3080"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;and&#160;tile.line_number&#160;&lt;&gt;&#160;10</tspan>
+</text>
+<text x="10" y="3100"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="3120"><tspan style="fill:#00cd00;">),&#160;full_maps_iterations(map_id,&#160;next_tile_id,&#160;line_number,&#160;original_line_number,&#160;line_value)&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="3140"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;map_id,</tspan>
+</text>
+<text x="10" y="3160"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;right_tile,</tspan>
+</text>
+<text x="10" y="3180"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_number,</tspan>
+</text>
+<text x="10" y="3200"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;original_line_number,</tspan>
+</text>
+<text x="10" y="3220"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_value</tspan>
+</text>
+<text x="10" y="3240"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;left_column_tiles</tspan>
+</text>
+<text x="10" y="3260"><tspan style="fill:#00cd00;">&#160;&#160;union</tspan>
+</text>
+<text x="10" y="3280"><tspan style="fill:#00cd00;">&#160;&#160;(</tspan>
+</text>
+<text x="10" y="3300"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;with&#160;previous_tile&#160;as&#160;(table&#160;full_maps_iterations)</tspan>
+</text>
+<text x="10" y="3320"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;select&#160;previous_tile.map_id,</tspan>
+</text>
+<text x="10" y="3340"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;tile_mesh.right_tile,</tspan>
+</text>
+<text x="10" y="3360"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;previous_tile.line_number,</tspan>
+</text>
+<text x="10" y="3380"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;previous_tile.original_line_number,</tspan>
+</text>
+<text x="10" y="3400"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;concat(previous_tile.line_value,&#160;substring(tile.line_value,&#160;2,&#160;8))</tspan>
+</text>
+<text x="10" y="3420"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;from&#160;previous_tile</tspan>
+</text>
+<text x="10" y="3440"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;tile_mesh</tspan>
+</text>
+<text x="10" y="3460"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile_mesh.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
+</text>
+<text x="10" y="3480"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;all_possible_tiles_raw&#160;tile</tspan>
+</text>
+<text x="10" y="3500"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
+</text>
+<text x="10" y="3520"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;and&#160;tile.line_number&#160;=&#160;previous_tile.original_line_number</tspan>
+</text>
+<text x="10" y="3540"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="3560"><tspan style="fill:#00cd00;">),&#160;full_maps&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="3580"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;map_id,&#160;line_number,&#160;line_value</tspan>
+</text>
+<text x="10" y="3600"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;full_maps_iterations</tspan>
+</text>
+<text x="10" y="3620"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;next_tile_id&#160;is&#160;null</tspan>
+</text>
+<text x="10" y="3640"><tspan style="fill:#00cd00;">&#160;&#160;order</tspan>&#160;by&#160;<tspan style="fill:#cd0000;">a_id</tspan>
+</text>
+<text x="10" y="3660"><tspan style="fill:#cd0000;">&#160;&#160;having&#160;count(*)</tspan><tspan style="fill:#00cd00;">line_number</tspan>
+</text>
+<text x="10" y="3680"><tspan style="fill:#00cd00;">),&#160;sea_monsters&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="3700"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;*</tspan>
+</text>
+<text x="10" y="3720"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;(values&#160;('(#....##....##....###)'))&#160;as&#160;dragon_body(query),</tspan>
+</text>
+<text x="10" y="3740"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;map_id,</tspan>
+</text>
+<text x="10" y="3760"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_number,</tspan>
+</text>
+<text x="10" y="3780"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;strpos(line_value,&#160;(regexp_matches(line_value,&#160;dragon_body.query,&#160;'g'))[1])</tspan>
+</text>
+<text x="10" y="3800"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;full_maps)&#160;as&#160;body_match,</tspan>
+</text>
+<text x="10" y="3820"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;true&#160;from&#160;full_maps</tspan>
+</text>
+<text x="10" y="3840"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;full_maps.map_id&#160;=&#160;body_match.map_id</tspan>
+</text>
+<text x="10" y="3860"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;full_maps.line_number&#160;=&#160;body_match.line_number&#160;+&#160;1</tspan>
+</text>
+<text x="10" y="3880"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;full_maps.line_value&#160;~&#160;concat('^.{',&#160;body_match.strpos-1,&#160;'}.#..#..#..#..#..#...')</tspan>
+</text>
+<text x="10" y="3900"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;)&#160;as&#160;feet_check(matching_feet),</tspan>
+</text>
+<text x="10" y="3920"><tspan style="fill:#00cd00;">&#160;&#160;lateral&#160;(select&#160;true&#160;from&#160;full_maps</tspan>
+</text>
+<text x="10" y="3940"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;full_maps.map_id&#160;=&#160;body_match.map_id</tspan>
+</text>
+<text x="10" y="3960"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;full_maps.line_number&#160;=&#160;body_match.line_number&#160;-&#160;1</tspan>
+</text>
+<text x="10" y="3980"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;and&#160;full_maps.line_value&#160;~&#160;concat('^.{',&#160;body_match.strpos-1,&#160;'}..................#.')</tspan>
+</text>
+<text x="10" y="4000"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;)&#160;as&#160;head_check(matching_head)</tspan>
+</text>
+<text x="10" y="4020"><tspan style="fill:#00cd00;">),&#160;waves_count&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="4040"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;sum(char_length(replace(line_value,&#160;'.','')))&#160;as&#160;total</tspan>
+</text>
+<text x="10" y="4060"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;full_maps</tspan>
+</text>
+<text x="10" y="4080"><tspan style="fill:#00cd00;">&#160;&#160;where&#160;map_id</tspan>&#160;=&#160;<tspan style="fill:#cd0000;">2</tspan><tspan style="fill:#00cd00;">(select&#160;map_id&#160;from&#160;full_maps&#160;limit&#160;1)</tspan>
+</text>
+<text x="10" y="4100"><tspan style="fill:#00cd00;">),&#160;roughness(total)&#160;as&#160;(</tspan>
+</text>
+<text x="10" y="4120"><tspan style="fill:#00cd00;">&#160;&#160;select&#160;(select&#160;total&#160;from&#160;waves_count)&#160;-&#160;(select&#160;count(*)&#160;*&#160;15&#160;from&#160;sea_monsters)</tspan>
+</text>
+<text x="10" y="4140">)&#160;select&#160;concat('Day&#160;20&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;<tspan style="fill:#cd0000;">day20.product(a_id))</tspan><tspan style="fill:#00cd00;">total)</tspan>
+</text>
+<text x="10" y="4160">&#160;&#160;from&#160;<tspan style="fill:#cd0000;">corners</tspan><tspan style="fill:#00cd00;">roughness</tspan>
+</text>
+<text x="10" y="4180">;
+</text>
+</g>
+</svg>
+<!-- SVG generated by ansifilter 2.15, http://www.andre-simon.de/ -->

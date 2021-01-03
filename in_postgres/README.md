@@ -32,3 +32,5 @@
 ![day_18](./day_18_diff.svg)
 ## day_19
 ![day_19](./day_19_diff.svg)
+## day_20
+![day_20](./day_20_diff.svg)
