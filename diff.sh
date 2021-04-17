@@ -13,8 +13,8 @@ git diff --word-diff=color --color-moved-ws=ignore-all-space --diff-algorithm=mi
   | ansifilter -S --width $WIDTH --height __HEIGHT__ \
   > "${SVG}"
 
-HEIGHT=$(grep -o 'y="\d*"' "${SVG}" | tail -1 | grep -o '\d\+')
-HEIGHT=$((HEIGHT + 20))
+HEIGHT=$(grep -P -o 'y="\d*"' "${SVG}" | tail -1 | grep -P -o '\d+')
+HEIGHT=$(( HEIGHT + 20 ))
 
 sed "s/__HEIGHT__/${HEIGHT}/g" "${SVG}" > "${SVG}.tmp"
 mv "${SVG}.tmp" "${SVG}"

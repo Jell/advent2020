@@ -29,6 +29,10 @@
 |Day 25    |          |          |          |          |          |          |          |
 
 
+## Dependencies
+
+You will need git and ansifilter to generate the diffs.
+
 ## Languages
 
 To update report:
