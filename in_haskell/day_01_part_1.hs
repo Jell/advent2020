@@ -1,4 +1,4 @@
-#!/usr/bin/env stack --resolver lts-14.14 runghc
+#!/usr/bin/env -S stack --resolver lts-14.14 runghc
 
 -- when running in ghci:
 -- :cd ~/DevPerso/advent2020/in_haskell

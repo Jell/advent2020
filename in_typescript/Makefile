@@ -7,12 +7,12 @@ DIFFS := $(shell cd "src" && ls | grep -e "day_.._part." | grep -o "day_.." | so
 package.json:
 
 node_modules: package.json
-	yarn install
+	npm install
 
 .PHONY: $(MAIN_FILES) $(DIFFS) README.md
 
 $(MAIN_FILES): node_modules
-	yarn ts-node $@
+	npx ts-node $@
 
 README.md:
 	echo "# In TypeScript\n" > README.md

@@ -12,7 +12,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_01_part_1.hs&#160;b/day_01_part_2.hs</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;a109711..cb97326&#160;100755</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;de0308c..1f4a9a9&#160;100755</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_01_part_1.hs</tspan>
 </text>

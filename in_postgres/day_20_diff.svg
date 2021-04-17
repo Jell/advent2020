@@ -12,7 +12,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_20_part_1.sql&#160;b/day_20_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;19d2771..d997308&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;19d2771..38a4acc&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_20_part_1.sql</tspan>
 </text>
@@ -112,7 +112,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="1020"><tspan style="fill:#00cd00;">&#160;&#160;from&#160;(table&#160;original_tiles&#160;union&#160;table&#160;rotated_tiles&#160;union&#160;table&#160;vertical_flip_tiles)&#160;as&#160;tiles</tspan>
 </text>
-<text x="10" y="1040"><tspan style="fill:#00cd00;">),&#160;all_possible_tiles_raw&#160;as&#160;(</tspan>
+<text x="10" y="1040"><tspan style="fill:#00cd00;">),&#160;all_possible_tiles&#160;as&#160;(</tspan>
 </text>
 <text x="10" y="1060"><tspan style="fill:#00cd00;">&#160;&#160;table&#160;original_tiles</tspan>
 </text>
@@ -124,9 +124,9 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="1140"><tspan style="fill:#00cd00;">),&#160;all_possible_tile_ids</tspan>&#160;as&#160;(
 </text>
-<text x="10" y="1160">&#160;&#160;select&#160;distinct&#160;tile_id&#160;as&#160;<tspan style="fill:#cd0000;">id</tspan><tspan style="fill:#00cd00;">id,&#160;original_tile_id</tspan>&#160;from&#160;<tspan style="fill:#cd0000;">tiles</tspan><tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>
+<text x="10" y="1160">&#160;&#160;select&#160;distinct&#160;tile_id&#160;as&#160;<tspan style="fill:#cd0000;">id</tspan><tspan style="fill:#00cd00;">id,&#160;original_tile_id</tspan>&#160;from&#160;<tspan style="fill:#cd0000;">tiles</tspan><tspan style="fill:#00cd00;">all_possible_tiles</tspan>
 </text>
-<text x="10" y="1180">),&#160;<tspan style="fill:#cd0000;">tile_edges</tspan><tspan style="fill:#00cd00;">all_possible_tiles</tspan>&#160;as&#160;(
+<text x="10" y="1180">),&#160;<tspan style="fill:#cd0000;">tile_edges</tspan><tspan style="fill:#00cd00;">all_possible_tile_edges</tspan>&#160;as&#160;(
 </text>
 <text x="10" y="1200">&#160;&#160;select&#160;<tspan style="fill:#cd0000;">tile_ids.id,</tspan><tspan style="fill:#00cd00;">id&#160;as&#160;tile_id,</tspan>
 </text>
@@ -150,7 +150,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="1400">&#160;&#160;lateral&#160;(select&#160;line_value
 </text>
-<text x="10" y="1420">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>&#160;tiles
+<text x="10" y="1420">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles</tspan>&#160;tiles
 </text>
 <text x="10" y="1440">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;tile_ids.id&#160;=&#160;tiles.tile_id
 </text>
@@ -158,7 +158,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="1480">&#160;&#160;lateral&#160;(select&#160;line_value
 </text>
-<text x="10" y="1500">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>&#160;tiles
+<text x="10" y="1500">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles</tspan>&#160;tiles
 </text>
 <text x="10" y="1520">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;tile_ids.id&#160;=&#160;tiles.tile_id
 </text>
@@ -168,7 +168,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="1580">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;string_agg(right(line_value,&#160;1),&#160;''&#160;order&#160;by&#160;line_number)&#160;as&#160;right_line
 </text>
-<text x="10" y="1600">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles_raw</tspan>&#160;tiles
+<text x="10" y="1600">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;from&#160;<tspan style="fill:#00cd00;">all_possible_tiles</tspan>&#160;tiles
 </text>
 <text x="10" y="1620">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;where&#160;tile_ids.id&#160;=&#160;tiles.tile_id)&#160;as&#160;side
 </text>
@@ -184,11 +184,11 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="1740"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;bottom_tile.tile_id&#160;as&#160;bottom_tile</tspan>
 </text>
-<text x="10" y="1760">&#160;&#160;from&#160;<tspan style="fill:#cd0000;">tile_edges&#160;a</tspan><tspan style="fill:#00cd00;">all_possible_tiles&#160;tiles</tspan>
+<text x="10" y="1760">&#160;&#160;from&#160;<tspan style="fill:#cd0000;">tile_edges&#160;a</tspan><tspan style="fill:#00cd00;">all_possible_tile_edges&#160;tiles</tspan>
 </text>
 <text x="10" y="1780"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;left</tspan>
 </text>
-<text x="10" y="1800"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer</tspan>&#160;join&#160;<tspan style="fill:#cd0000;">tile_edges&#160;b</tspan><tspan style="fill:#00cd00;">all_possible_tiles&#160;left_tile</tspan>
+<text x="10" y="1800"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer</tspan>&#160;join&#160;<tspan style="fill:#cd0000;">tile_edges&#160;b</tspan><tspan style="fill:#00cd00;">all_possible_tile_edges&#160;left_tile</tspan>
 </text>
 <text x="10" y="1820">&#160;&#160;on&#160;<tspan style="fill:#cd0000;">array[</tspan>
 </text>
@@ -232,7 +232,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="2220"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;right</tspan>
 </text>
-<text x="10" y="2240"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tiles&#160;right_tile</tspan>
+<text x="10" y="2240"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tile_edges&#160;right_tile</tspan>
 </text>
 <text x="10" y="2260"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;right_tile.left_line&#160;=&#160;tiles.right_line</tspan>
 </text>
@@ -240,7 +240,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="2300"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;top</tspan>
 </text>
-<text x="10" y="2320"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tiles&#160;top_tile</tspan>
+<text x="10" y="2320"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tile_edges&#160;top_tile</tspan>
 </text>
 <text x="10" y="2340"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;top_tile.bottom_line&#160;=&#160;tiles.top_line</tspan>
 </text>
@@ -248,7 +248,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="2380"><tspan style="fill:#00cd00;">&#160;&#160;--&#160;bottom</tspan>
 </text>
-<text x="10" y="2400"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tiles&#160;bottom_tile</tspan>
+<text x="10" y="2400"><tspan style="fill:#00cd00;">&#160;&#160;left&#160;outer&#160;join&#160;all_possible_tile_edges&#160;bottom_tile</tspan>
 </text>
 <text x="10" y="2420"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;bottom_tile.top_line&#160;=&#160;tiles.bottom_line</tspan>
 </text>
@@ -278,7 +278,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="2680"><tspan style="fill:#cd0000;">&#160;&#160;group</tspan><tspan style="fill:#00cd00;">top_left_corners&#160;corner</tspan>
 </text>
-<text x="10" y="2700"><tspan style="fill:#00cd00;">&#160;&#160;join&#160;all_possible_tiles_raw&#160;tile</tspan>
+<text x="10" y="2700"><tspan style="fill:#00cd00;">&#160;&#160;join&#160;all_possible_tiles&#160;tile</tspan>
 </text>
 <text x="10" y="2720"><tspan style="fill:#00cd00;">&#160;&#160;on&#160;tile.tile_id&#160;=&#160;corner.tile_id</tspan>
 </text>
@@ -310,7 +310,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="3000"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile_mesh.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
 </text>
-<text x="10" y="3020"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;all_possible_tiles_raw&#160;tile</tspan>
+<text x="10" y="3020"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;all_possible_tiles&#160;tile</tspan>
 </text>
 <text x="10" y="3040"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
 </text>
@@ -356,7 +356,7 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 </text>
 <text x="10" y="3460"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile_mesh.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
 </text>
-<text x="10" y="3480"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;all_possible_tiles_raw&#160;tile</tspan>
+<text x="10" y="3480"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;join&#160;all_possible_tiles&#160;tile</tspan>
 </text>
 <text x="10" y="3500"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;on&#160;tile.tile_id&#160;=&#160;previous_tile.next_tile_id</tspan>
 </text>
