@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS day01;
 
-CREATE TABLE day01 (
+CREATE UNLOGGED TABLE day01 (
     line_number bigint NOT NULL GENERATED ALWAYS AS IDENTITY,
     value bigint NOT NULL
 );
