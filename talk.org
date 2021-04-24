@@ -8,6 +8,14 @@ Vik Fearing (@pg_xocolatl on twitter)
 
 https://github.com/xocolatl/advent-of-code
 
+* Forewords
+
+- repo: https://github.com/Jell/advent2020
+
+- pure SQL, as standard as possible
+
+Some of the solutions could be handled better or more efficiently by creating a function, but functions are not part of the SQL standard.
+
 * Highlights
 
 ** Day 1 - part 1
@@ -53,7 +61,7 @@ https://github.com/xocolatl/advent-of-code
 
 ** Day 15 - part 1
 
-- hstore
+- hstore (not SQL standard, but JSON too slow!)
 - union all
 
 ** Day 17 - part 1?
