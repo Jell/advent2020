@@ -1,57 +1,60 @@
 * Acknowledgements
 
 Initial inspiration:
+
 Vik Fearing (@pg_xocolatl on twitter)
+
 (stole day 1)
+
 https://github.com/xocolatl/advent-of-code
 
 * Highlights
 
 ** Day 1 - part 1
 
-basic setup
-input from program
+- basic setup
+- input from program
 
 ** Day 2 - part 1
 
-lateral select
+- lateral select
 
 ** Day 10 - part 1
 
-union
-window function
-filter
+- union
+- window function
+- filter
 
 ** Day 4 - part 1
 
-with
-window function
-JSON aggregate
+- with
+- window function
+- JSON aggregate
 
 ** Day 6 - part 2?
 
-cross join
-having
+- cross join
+- having
 
 ** Day 7
 *** part 1
 
-step debugging (from (table day07.inputs limit 1 offset 0) i)
-regexp matches
-with recursive
+- step debugging (from (table day07.inputs limit 1 offset 0) i)
+- regexp matches
+- with recursive
 
 *** part 2
 
-recursion (iterative reduce)
+- recursion (iterative reduce)
 
 ** Day 8 - part 1
 
-recursion (interpreter)
+- recursion (interpreter)
 
 ** Day 15 - part 1
 
-hstore
-union all
+- hstore
+- union all
 
 ** Day 17 - part 1?
 
