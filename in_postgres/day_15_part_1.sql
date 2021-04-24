@@ -19,7 +19,7 @@ with recursive inputs as (
   from day15.inputs,
   lateral regexp_split_to_table(line_value, ',') with ordinality as n
 ), game(i, n, mem) as (
-  (select i, n, (select hstore(array_agg(n::text), array_agg(i::text)) from inputs)
+  (select i, n, hstore(array_agg(n::text) over (), array_agg(i::text) over ())
    from inputs
    order by i desc
    limit 1)

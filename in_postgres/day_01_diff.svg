@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="360">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="500">
 <desc>Source file</desc>
 <defs><style type="text/css">
 <![CDATA[
@@ -12,37 +12,51 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_01_part_1.sql&#160;b/day_01_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;b30bf44..9d8c956&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;b9b1d07..9d8c956&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_01_part_1.sql</tspan>
 </text>
 <text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_01_part_2.sql</tspan>
 </text>
-<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,10&#160;+12,12&#160;@@</tspan>&#160;CREATE&#160;INDEX&#160;ON&#160;day01&#160;(value,&#160;line_number);
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-1,6&#160;+1,6&#160;@@</tspan>
 </text>
-<text x="10" y="120">
+<text x="10" y="120">DROP&#160;TABLE&#160;IF&#160;EXISTS&#160;day01;
 </text>
-<text x="10" y="140">\timing&#160;on
+<text x="10" y="140">
 </text>
-<text x="10" y="160">
+<text x="10" y="160">CREATE<tspan style="fill:#cd0000;">UNLOGGED</tspan>&#160;TABLE&#160;day01&#160;(
 </text>
-<text x="10" y="180">SELECT&#160;concat('Day&#160;01&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;(a.value&#160;*&#160;<tspan style="fill:#cd0000;">b.value))</tspan><tspan style="fill:#00cd00;">b.value&#160;*&#160;c.value))</tspan>
+<text x="10" y="180">&#160;&#160;&#160;&#160;line_number&#160;bigint&#160;NOT&#160;NULL&#160;GENERATED&#160;ALWAYS&#160;AS&#160;IDENTITY,
 </text>
-<text x="10" y="200">from&#160;day01&#160;as&#160;a,&#160;day01&#160;as&#160;<tspan style="fill:#cd0000;">b</tspan><tspan style="fill:#00cd00;">b,&#160;day01&#160;as&#160;c</tspan>
+<text x="10" y="200">&#160;&#160;&#160;&#160;value&#160;bigint&#160;NOT&#160;NULL
 </text>
-<text x="10" y="220">where
+<text x="10" y="220">);
 </text>
-<text x="10" y="240">&#160;&#160;&#160;&#160;a.value&#160;&lt;=&#160;2020
+<text x="10" y="240"><tspan style="fill:#00cdcd;">@@&#160;-12,10&#160;+12,12&#160;@@</tspan>&#160;CREATE&#160;INDEX&#160;ON&#160;day01&#160;(value,&#160;line_number);
 </text>
-<text x="10" y="260">and&#160;b.value&#160;<tspan style="fill:#00cd00;">&lt;=&#160;2020&#160;-&#160;a.value</tspan>
+<text x="10" y="260">
 </text>
-<text x="10" y="280"><tspan style="fill:#00cd00;">and&#160;c.value</tspan>&#160;&#160;=&#160;2020&#160;-&#160;a.value&#160;<tspan style="fill:#00cd00;">-&#160;b.value</tspan>
+<text x="10" y="280">\timing&#160;on
 </text>
-<text x="10" y="300">and&#160;a.line_number&#160;&lt;&#160;b.line_number
+<text x="10" y="300">
 </text>
-<text x="10" y="320"><tspan style="fill:#00cd00;">and&#160;b.line_number&#160;&lt;&#160;c.line_number</tspan>
+<text x="10" y="320">SELECT&#160;concat('Day&#160;01&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;(a.value&#160;*&#160;<tspan style="fill:#cd0000;">b.value))</tspan><tspan style="fill:#00cd00;">b.value&#160;*&#160;c.value))</tspan>
 </text>
-<text x="10" y="340">limit&#160;1;
+<text x="10" y="340">from&#160;day01&#160;as&#160;a,&#160;day01&#160;as&#160;<tspan style="fill:#cd0000;">b</tspan><tspan style="fill:#00cd00;">b,&#160;day01&#160;as&#160;c</tspan>
+</text>
+<text x="10" y="360">where
+</text>
+<text x="10" y="380">&#160;&#160;&#160;&#160;a.value&#160;&lt;=&#160;2020
+</text>
+<text x="10" y="400">and&#160;b.value&#160;<tspan style="fill:#00cd00;">&lt;=&#160;2020&#160;-&#160;a.value</tspan>
+</text>
+<text x="10" y="420"><tspan style="fill:#00cd00;">and&#160;c.value</tspan>&#160;&#160;=&#160;2020&#160;-&#160;a.value&#160;<tspan style="fill:#00cd00;">-&#160;b.value</tspan>
+</text>
+<text x="10" y="440">and&#160;a.line_number&#160;&lt;&#160;b.line_number
+</text>
+<text x="10" y="460"><tspan style="fill:#00cd00;">and&#160;b.line_number&#160;&lt;&#160;c.line_number</tspan>
+</text>
+<text x="10" y="480">limit&#160;1;
 </text>
 </g>
 </svg>

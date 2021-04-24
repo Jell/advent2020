@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.2//EN" "http://www.w3.org/Graphics/SVG/1.2/DTD/svg12.dtd">
-<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="660">
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="full" xml:space="preserve" width="600" height="820">
 <desc>Source file</desc>
 <defs><style type="text/css">
 <![CDATA[
@@ -12,67 +12,83 @@ g { font-size: 10pt; font-family: Courier New; white-space: pre; }
 <text x="10" y="20"></text>
 <text x="10" y="20"><tspan style="font-weight:bold;fill:#7f7f7f;">diff&#160;--git&#160;a/day_04_part_1.sql&#160;b/day_04_part_2.sql</tspan>
 </text>
-<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;de87e7d..edd8859&#160;100644</tspan>
+<text x="10" y="40"><tspan style="font-weight:bold;fill:#7f7f7f;">index&#160;dc8c16e..b5c4023&#160;100644</tspan>
 </text>
 <text x="10" y="60"><tspan style="font-weight:bold;fill:#7f7f7f;">---&#160;a/day_04_part_1.sql</tspan>
 </text>
 <text x="10" y="80"><tspan style="font-weight:bold;fill:#7f7f7f;">+++&#160;b/day_04_part_2.sql</tspan>
 </text>
-<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-25,7&#160;+25,7&#160;@@</tspan>&#160;with&#160;recursive&#160;passport_lines(pass_id,&#160;i,&#160;line)&#160;as&#160;(
+<text x="10" y="100"><tspan style="fill:#00cdcd;">@@&#160;-12,7&#160;+12,7&#160;@@</tspan>&#160;VACUUM&#160;ANALYZE&#160;day04.inputs;
 </text>
-<text x="10" y="120">&#160;&#160;lateral&#160;(select&#160;split_part(label.val,&#160;':',&#160;1)&#160;as&#160;&quot;key&quot;,&#160;split_part(label.val,&#160;':',&#160;2)&#160;as&#160;value)&#160;as&#160;tags
+<text x="10" y="120">
 </text>
-<text x="10" y="140">&#160;&#160;where&#160;line&#160;&lt;&gt;&#160;''
+<text x="10" y="140">\timing&#160;on
 </text>
-<text x="10" y="160">&#160;&#160;group&#160;by&#160;pass_id
+<text x="10" y="160">
 </text>
-<text x="10" y="180">)&#160;select&#160;concat('Day&#160;04&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;count(*))
+<text x="10" y="180">with&#160;&#160;passport_lines(pass_id,&#160;i,&#160;line)&#160;as&#160;(
 </text>
-<text x="10" y="200">&#160;&#160;from&#160;passports
+<text x="10" y="200">&#160;&#160;&#160;select&#160;max(line_number)&#160;filter&#160;(where&#160;line_value&#160;=&#160;'')&#160;over&#160;(order&#160;by&#160;line_number),
 </text>
-<text x="10" y="220">&#160;&#160;where&#160;fields&#160;?&#160;'byr'
+<text x="10" y="220">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_number,
 </text>
-<text x="10" y="240">&#160;&#160;and&#160;fields&#160;?&#160;'iyr'
+<text x="10" y="240">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;line_value
 </text>
-<text x="10" y="260"><tspan style="fill:#00cdcd;">@@&#160;-34,5&#160;+34,19&#160;@@</tspan>&#160;with&#160;recursive&#160;passport_lines(pass_id,&#160;i,&#160;line)&#160;as&#160;(
+<text x="10" y="260"><tspan style="fill:#00cdcd;">@@&#160;-24,7&#160;+24,7&#160;@@</tspan>&#160;with&#160;passport_lines(pass_id,&#160;i,&#160;line)&#160;as&#160;(
 </text>
-<text x="10" y="280">&#160;&#160;and&#160;fields&#160;?&#160;'hcl'
+<text x="10" y="280">&#160;&#160;lateral&#160;(select&#160;split_part(label.val,&#160;':',&#160;1)&#160;as&#160;&quot;key&quot;,&#160;split_part(label.val,&#160;':',&#160;2)&#160;as&#160;value)&#160;as&#160;tags
 </text>
-<text x="10" y="300">&#160;&#160;and&#160;fields&#160;?&#160;'ecl'
+<text x="10" y="300">&#160;&#160;where&#160;line&#160;&lt;&gt;&#160;''
 </text>
-<text x="10" y="320">&#160;&#160;and&#160;fields&#160;?&#160;'pid'
+<text x="10" y="320">&#160;&#160;group&#160;by&#160;pass_id
 </text>
-<text x="10" y="340">&#160;&#160;<tspan style="fill:#00cd00;">and&#160;fields-&gt;&gt;'byr'&#160;~&#160;'^\d{4}$'</tspan>
+<text x="10" y="340">)&#160;select&#160;concat('Day&#160;04&#160;-&#160;Part&#160;<tspan style="fill:#cd0000;">1:</tspan><tspan style="fill:#00cd00;">2:</tspan>&#160;',&#160;count(*))
 </text>
-<text x="10" y="360"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(fields-&gt;&gt;'byr')::int&#160;between&#160;1920&#160;and&#160;2002</tspan>
+<text x="10" y="360">&#160;&#160;from&#160;passports
 </text>
-<text x="10" y="380"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'iyr'&#160;~&#160;'^\d{4}$'</tspan>
+<text x="10" y="380">&#160;&#160;where&#160;fields&#160;?&#160;'byr'
 </text>
-<text x="10" y="400"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(fields-&gt;&gt;'iyr')::int&#160;between&#160;2010&#160;and&#160;2020</tspan>
+<text x="10" y="400">&#160;&#160;and&#160;fields&#160;?&#160;'iyr'
 </text>
-<text x="10" y="420"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'eyr'&#160;~&#160;'^\d{4}$'</tspan>
+<text x="10" y="420"><tspan style="fill:#00cdcd;">@@&#160;-33,5&#160;+33,19&#160;@@</tspan>&#160;with&#160;passport_lines(pass_id,&#160;i,&#160;line)&#160;as&#160;(
 </text>
-<text x="10" y="440"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(fields-&gt;&gt;'eyr')::int&#160;between&#160;2020&#160;and&#160;2030</tspan>
+<text x="10" y="440">&#160;&#160;and&#160;fields&#160;?&#160;'hcl'
 </text>
-<text x="10" y="460"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(</tspan>
+<text x="10" y="460">&#160;&#160;and&#160;fields&#160;?&#160;'ecl'
 </text>
-<text x="10" y="480"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;(fields-&gt;&gt;'hgt'&#160;~&#160;'^\d+cm$'&#160;and&#160;split_part(fields-&gt;&gt;'hgt',&#160;'cm',&#160;1)::int&#160;between&#160;150&#160;and&#160;193)</tspan>
+<text x="10" y="480">&#160;&#160;and&#160;fields&#160;?&#160;'pid'
 </text>
-<text x="10" y="500"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;or</tspan>
+<text x="10" y="500">&#160;&#160;<tspan style="fill:#00cd00;">and&#160;fields-&gt;&gt;'byr'&#160;~&#160;'^\d{4}$'</tspan>
 </text>
-<text x="10" y="520"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;(fields-&gt;&gt;'hgt'&#160;~&#160;'^\d+in$'&#160;and&#160;split_part(fields-&gt;&gt;'hgt',&#160;'in',&#160;1)::int&#160;between&#160;59&#160;and&#160;76)</tspan>
+<text x="10" y="520"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(fields-&gt;&gt;'byr')::int&#160;between&#160;1920&#160;and&#160;2002</tspan>
 </text>
-<text x="10" y="540"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+<text x="10" y="540"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'iyr'&#160;~&#160;'^\d{4}$'</tspan>
 </text>
-<text x="10" y="560"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'hcl'&#160;~&#160;'^#[0-9a-f]{6}$'</tspan>
+<text x="10" y="560"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(fields-&gt;&gt;'iyr')::int&#160;between&#160;2010&#160;and&#160;2020</tspan>
 </text>
-<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'ecl'&#160;~&#160;'^amb|blu|brn|gry|grn|hzl|oth$'</tspan>
+<text x="10" y="580"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'eyr'&#160;~&#160;'^\d{4}$'</tspan>
 </text>
-<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'pid'&#160;~&#160;'^\d{9}$'</tspan>
+<text x="10" y="600"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(fields-&gt;&gt;'eyr')::int&#160;between&#160;2020&#160;and&#160;2030</tspan>
 </text>
-<text x="10" y="620">&#160;&#160;--&#160;and&#160;fields&#160;?&#160;'cid'
+<text x="10" y="620"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;(</tspan>
 </text>
-<text x="10" y="640">;
+<text x="10" y="640"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;(fields-&gt;&gt;'hgt'&#160;~&#160;'^\d+cm$'&#160;and&#160;split_part(fields-&gt;&gt;'hgt',&#160;'cm',&#160;1)::int&#160;between&#160;150&#160;and&#160;193)</tspan>
+</text>
+<text x="10" y="660"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;or</tspan>
+</text>
+<text x="10" y="680"><tspan style="fill:#00cd00;">&#160;&#160;&#160;&#160;(fields-&gt;&gt;'hgt'&#160;~&#160;'^\d+in$'&#160;and&#160;split_part(fields-&gt;&gt;'hgt',&#160;'in',&#160;1)::int&#160;between&#160;59&#160;and&#160;76)</tspan>
+</text>
+<text x="10" y="700"><tspan style="fill:#00cd00;">&#160;&#160;)</tspan>
+</text>
+<text x="10" y="720"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'hcl'&#160;~&#160;'^#[0-9a-f]{6}$'</tspan>
+</text>
+<text x="10" y="740"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'ecl'&#160;~&#160;'^amb|blu|brn|gry|grn|hzl|oth$'</tspan>
+</text>
+<text x="10" y="760"><tspan style="fill:#00cd00;">&#160;&#160;and&#160;fields-&gt;&gt;'pid'&#160;~&#160;'^\d{9}$'</tspan>
+</text>
+<text x="10" y="780">&#160;&#160;--&#160;and&#160;fields&#160;?&#160;'cid'
+</text>
+<text x="10" y="800">;
 </text>
 </g>
 </svg>

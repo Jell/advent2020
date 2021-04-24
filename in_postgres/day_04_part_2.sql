@@ -12,12 +12,11 @@ VACUUM ANALYZE day04.inputs;
 
 \timing on
 
-with recursive passport_lines(pass_id, i, line) as (
-   select 0, 0, ''
-   union
-   select case when line_value = '' then pass_id+1 else pass_id end, i+1, line_value
-   from passport_lines,
-        lateral (select * from day04.inputs where line_number = i + 1) as inputs
+with  passport_lines(pass_id, i, line) as (
+   select max(line_number) filter (where line_value = '') over (order by line_number),
+          line_number,
+          line_value
+   from day04.inputs
 ), passports as (
   select pass_id, jsonb_object_agg(tags.key, tags.value) as fields
   from passport_lines,
