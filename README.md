@@ -29,6 +29,13 @@
 |Day 25    |          |          |          |          |          |          |          |
 
 
+## Acknowledgements
+
+Initial inspiration for postgres version:
+Vik Fearing (@pg_xocolatl on twitter)
+(stole day 1)
+https://github.com/xocolatl/advent-of-code
+
 ## Dependencies
 
 You will need git and ansifilter to generate the diffs.
